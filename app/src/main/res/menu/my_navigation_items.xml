@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:android="http://schemas.android.com/apk/res/android">
+        <item
+            android:id="@+id/btnLogin"
+            android:icon="@drawable/login_ic"
+            android:title="Đăng nhập"/>
+        <item
+            android:id="@+id/btnRegister"
+            android:icon="@drawable/register_ic"
+            android:title="Đăng kí"/>
+        <item
+            android:id="@+id/btnAccount"
+            android:icon="@drawable/account_ic"
+            android:title="Thông tin tài khoản"
+            android:visible="false"/>
+        <item
+            android:id="@+id/btnShutdown"
+            android:icon="@drawable/shutdown_ic"
+            android:title="Thoát"/>
+</menu>
