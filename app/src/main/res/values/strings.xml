@@ -1,3 +1,11 @@
 <resources>
-    <string name="app_name">AppFood</string>
+    <string name="app_name">Pizza HVH</string>
+    <string name="pizza_home">Pizza HVH</string>
+    <string name="search_nav">Tìm kiếm pizza</string>
+    <string name="title">Dành cho bạn hôm nay</string>
+    <string name="bell_icon">Thông báo</string>
+    <string name="location_icon">Vị trí</string>
+    <string name="location">Hà Nội</string>
+    <string name="about">Mô tả</string>
+    <string name="add_cart">Thêm vào giỏ hàng</string>
 </resources>
