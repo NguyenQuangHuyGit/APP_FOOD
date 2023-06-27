@@ -11,6 +11,7 @@ import com.example.appfood.R;
 import com.example.appfood.model.Food;
 
 import java.util.ArrayList;
+import java.util.Objects;
 
 public class FoodDBHelper extends SQLiteOpenHelper{
     private static final String DATABASE_NAME = "food_database.db";
@@ -60,6 +61,9 @@ public class FoodDBHelper extends SQLiteOpenHelper{
                 "FOREIGN KEY(" + COLUMN_FOOD_ID + ") REFERENCES " + TABLE_FOOD + "(" + COLUMN_ID + "), " +
                 "FOREIGN KEY(" + COLUMN_BILL_ID + ") REFERENCES " + TABLE_BILL + "(" + COLUMN_ID + "))";
         db.execSQL(createRelationshipTableQuery);
+
+        // Create User
+        db.execSQL("CREATE TABLE IF NOT EXISTS users(id Integer PRIMARY KEY AUTOINCREMENT,name TEXT DEFAULT NULL,address TEXT DEFAULT NULL,phone TEXT UNIQUE, password TEXT)");
     }
 
     public void insertFood(){
@@ -162,7 +166,66 @@ public class FoodDBHelper extends SQLiteOpenHelper{
         db.execSQL("DROP TABLE IF EXISTS " + TABLE_FOOD);
         db.execSQL("DROP TABLE IF EXISTS " + TABLE_BILL);
         db.execSQL("DROP TABLE IF EXISTS " + TABLE_BILL_FOOD);
+        db.execSQL("DROP TABLE IF EXISTS " + "users");
         onCreate(db);
     }
+
+    public Boolean insertUser(String phone, String password){
+        SQLiteDatabase MyDatabase = this.getWritableDatabase();
+        ContentValues contentValues = new ContentValues();
+        contentValues.put("phone", phone);
+        contentValues.put("password", password);
+        long result = MyDatabase.insert("users", null, contentValues);
+        if (result == -1) {
+            return false;
+        } else {
+            return true;
+        }
+    }
+
+    public Boolean updateUser(int id,String name, String address, String phone, String password){
+        SQLiteDatabase MyDatabase = this.getWritableDatabase();
+        ContentValues contentValues = new ContentValues();
+        contentValues.put("name", name);
+        contentValues.put("address", address);
+        contentValues.put("phone", phone);
+        contentValues.put("password", password);
+        String selection = "id = ?";
+        String[] selectionArgs = { String.valueOf(id) };
+        long result = MyDatabase.update("users",contentValues, selection, selectionArgs);
+        if (result == -1) {
+            return false;
+        } else {
+            return true;
+        }
+    }
+
+    public Boolean checkPhone(String phone){
+        SQLiteDatabase MyDatabase = this.getWritableDatabase();
+        Cursor cursor = MyDatabase.rawQuery("Select * from users where phone = ?", new String[]{phone});
+        if(cursor.getCount() > 0) {
+            cursor.close();
+            return true;
+        }else {
+            cursor.close();
+            return false;
+        }
+    }
+
+    @SuppressLint("Range")
+    public int checkPhonePassword(String phone, String password){
+        SQLiteDatabase MyDatabase = this.getWritableDatabase();
+        Cursor cursor = MyDatabase.rawQuery("Select id, password from users where phone = ?", new String[]{phone});
+        if (cursor != null && cursor.moveToFirst()) {
+            if (Objects.equals(password, cursor.getString(cursor.getColumnIndex("password")))) {
+                int id = cursor.getInt(cursor.getColumnIndex("id"));
+                cursor.close();
+                return id;
+            }
+            cursor.close();
+        }
+        return 0;
+    }
+
 }
 

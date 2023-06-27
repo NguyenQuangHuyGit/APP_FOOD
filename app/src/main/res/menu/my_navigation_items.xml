@@ -15,6 +15,11 @@
             android:title="Thông tin tài khoản"
             android:visible="false"/>
         <item
+            android:title="Đăng xuất"
+            android:id="@+id/btnLogout"
+            android:icon="@drawable/account_ic"
+            android:visible="false"/>
+        <item
             android:id="@+id/btnShutdown"
             android:icon="@drawable/shutdown_ic"
             android:title="Thoát"/>

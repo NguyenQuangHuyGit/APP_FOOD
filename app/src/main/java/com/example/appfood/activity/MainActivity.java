@@ -3,6 +3,7 @@ package com.example.appfood.activity;
 import android.annotation.SuppressLint;
 import android.content.Intent;
 import android.os.Bundle;
+import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.animation.Animation;
@@ -21,6 +22,7 @@ import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.appfood.R;
+import com.example.appfood.Session.SessionUser;
 import com.example.appfood.adapter.foodItemAdapter;
 import com.example.appfood.database.FoodDBHelper;
 import com.example.appfood.model.Food;
@@ -42,6 +44,8 @@ public class MainActivity extends AppCompatActivity {
     Toolbar toolbar;
     FloatingActionButton btnCart;
     NavigationView navigationView;
+
+    SessionUser sessionUser;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -51,6 +55,19 @@ public class MainActivity extends AppCompatActivity {
         setViewFlipper();
         setRecycleView();
         setEvent();
+        String userId = sessionUser.getUserId();
+        if(userId != null){
+            Menu menu = navigationView.getMenu();
+            menu.findItem(R.id.btnLogin).setVisible(false);
+            menu.findItem(R.id.btnRegister).setVisible(false);
+            menu.findItem(R.id.btnLogout).setVisible(true);
+            menu.findItem(R.id.btnAccount).setVisible(true);
+        }
+    }
+    @Override
+    protected void onDestroy(){
+        super.onDestroy();
+        sessionUser.clear();
     }
 
     private void setRecycleView(){
@@ -71,6 +88,7 @@ public class MainActivity extends AppCompatActivity {
         foodDB.insertFood();
         listFood = (RecyclerView) findViewById(R.id.listFood);
         navigationView = (NavigationView) findViewById(R.id.navigationView);
+        sessionUser = new SessionUser(this);
     }
 
     private void setNavigation(){
@@ -118,13 +136,13 @@ public class MainActivity extends AppCompatActivity {
             public boolean onNavigationItemSelected(@NonNull MenuItem item) {
                 int itemId = item.getItemId();
                 if(itemId == R.id.btnLogin){
-                    Toast toast = Toast.makeText(getApplicationContext(),"Login",Toast.LENGTH_SHORT);
-                    toast.show();
+                    Intent login = new Intent(MainActivity.this, LoginActivity.class);
+                    startActivity(login);
                     return true;
                 }
                 if(itemId == R.id.btnRegister){
-                    Toast toast = Toast.makeText(getApplicationContext(),"Register",Toast.LENGTH_SHORT);
-                    toast.show();
+                    Intent signup = new Intent(MainActivity.this, SignupActivity.class);
+                    startActivity(signup);
                     return true;
                 }
                 if(itemId == R.id.btnAccount){
@@ -132,8 +150,13 @@ public class MainActivity extends AppCompatActivity {
                     toast.show();
                     return true;
                 }
+                if(itemId == R.id.btnLogout){
+                    sessionUser.clear();
+                    recreate();
+                    return true;
+                }
                 if(itemId == R.id.btnShutdown){
-                    finish();
+                    finishAffinity();
                     return true;
                 }
                 return false;
