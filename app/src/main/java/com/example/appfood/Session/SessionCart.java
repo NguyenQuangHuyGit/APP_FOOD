@@ -25,7 +25,7 @@ public class SessionCart {
         editor.putString(key, json);
         editor.apply();
     }
-    public void clearCart(){
+    public void clear(){
         editor.clear();
         editor.apply();
     }
