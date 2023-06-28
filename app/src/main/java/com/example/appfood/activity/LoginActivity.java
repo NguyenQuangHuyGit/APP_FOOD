@@ -27,23 +27,34 @@ public class LoginActivity extends AppCompatActivity {
         binding.loginButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                String phone = binding.loginPhone.getText().toString();
+                String user = binding.loginPhoneEmail.getText().toString();
                 String password = binding.loginPassword.getText().toString();
 
-                if(phone.equals("")||password.equals(""))
-                    Toast.makeText(LoginActivity.this, "Bắt buộc phải nhập dữ liệu", Toast.LENGTH_SHORT).show();
+                if(user.equals("")||password.equals(""))
+                    Toast.makeText(LoginActivity.this, "Bắt buộc phải nhập dữ liệu!", Toast.LENGTH_SHORT).show();
                 else{
-                    int checkCredentials = db.checkPhonePassword(phone, password);
-                    if(checkCredentials != 0){
+                    int checkPhone = db.checkPhonePassword(user, password);
+                    int checkEmail = db.checkEmailPassword(user, password);
+                    if(checkPhone != 0 || checkEmail != 0){
                         Toast.makeText(LoginActivity.this, "Đăng nhập thành công!", Toast.LENGTH_SHORT).show();
-                        String userId = String.valueOf(checkCredentials);
-                        sessionUser.setUserId(userId);
+                        String id1 = String.valueOf(checkPhone);
+                        String id2 = String.valueOf(checkEmail);
+                        sessionUser.setUserId(id1);
+                        sessionUser.setUserId(id2);
                         Intent intent  = new Intent(getApplicationContext(), MainActivity.class);
                         startActivity(intent);
                     }else{
-                        Toast.makeText(LoginActivity.this, "Thông tin không đúng", Toast.LENGTH_SHORT).show();
+                        Toast.makeText(LoginActivity.this, "Thông tin không đúng. Vui lòng kiểm tra lại!", Toast.LENGTH_SHORT).show();
                     }
                 }
+            }
+        });
+
+        binding.backButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent intent = new Intent(LoginActivity.this, MainActivity.class);
+                startActivity(intent);
             }
         });
 

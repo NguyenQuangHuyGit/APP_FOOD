@@ -9,6 +9,7 @@ import android.database.sqlite.SQLiteOpenHelper;
 
 import com.example.appfood.R;
 import com.example.appfood.model.Food;
+import com.example.appfood.model.User;
 
 import java.util.ArrayList;
 import java.util.Objects;
@@ -30,6 +31,14 @@ public class FoodDBHelper extends SQLiteOpenHelper{
     private static final String COLUMN_FOOD_ID = "food_id";
     private static final String COLUMN_BILL_ID = "bill_id";
     private static final String COLUMN_COUNT = "count";
+
+    private static final String TABLE_USER = "users";
+    private static final String COLUMN_USER_ID = "id";
+    private static final String COLUMN_USER_NAME = "name";
+    private static final String COLUMN_USER_ADDRESS = "address";
+    private static final String COLUMN_USER_EMAIL = "email";
+    private static final String COLUMN_USER_PHONE = "phone";
+    private static final String COLUMN_USER_PASSWORD = "password";
 
     public FoodDBHelper(Context context) {
         super(context, DATABASE_NAME, null, DATABASE_VERSION);
@@ -63,7 +72,14 @@ public class FoodDBHelper extends SQLiteOpenHelper{
         db.execSQL(createRelationshipTableQuery);
 
         // Create User
-        db.execSQL("CREATE TABLE IF NOT EXISTS users(id Integer PRIMARY KEY AUTOINCREMENT,name TEXT DEFAULT NULL,address TEXT DEFAULT NULL,phone TEXT UNIQUE, password TEXT)");
+        String createTableUser = "CREATE TABLE IF NOT EXISTS " + TABLE_USER + "(" +
+                COLUMN_USER_ID + " INTEGER PRIMARY KEY AUTOINCREMENT, " +
+                COLUMN_USER_NAME + " TEXT, " +
+                COLUMN_USER_ADDRESS + " TEXT, " +
+                COLUMN_USER_EMAIL + " TEXT, " +
+                COLUMN_USER_PHONE + " TEXT,"+
+                COLUMN_USER_PASSWORD + " TEXT)";
+        db.execSQL(createTableUser);
     }
 
     public void insertFood(){
@@ -166,16 +182,19 @@ public class FoodDBHelper extends SQLiteOpenHelper{
         db.execSQL("DROP TABLE IF EXISTS " + TABLE_FOOD);
         db.execSQL("DROP TABLE IF EXISTS " + TABLE_BILL);
         db.execSQL("DROP TABLE IF EXISTS " + TABLE_BILL_FOOD);
-        db.execSQL("DROP TABLE IF EXISTS " + "users");
+        db.execSQL("DROP TABLE IF EXISTS " + TABLE_USER);
         onCreate(db);
     }
 
-    public Boolean insertUser(String phone, String password){
-        SQLiteDatabase MyDatabase = this.getWritableDatabase();
+    public boolean insertUser(String name, String address, String email, String phone, String password) {
+        SQLiteDatabase db = this.getWritableDatabase();
         ContentValues contentValues = new ContentValues();
-        contentValues.put("phone", phone);
-        contentValues.put("password", password);
-        long result = MyDatabase.insert("users", null, contentValues);
+        contentValues.put(COLUMN_USER_NAME, name);
+        contentValues.put(COLUMN_USER_ADDRESS, address);
+        contentValues.put(COLUMN_USER_EMAIL, email);
+        contentValues.put(COLUMN_USER_PHONE, phone);
+        contentValues.put(COLUMN_USER_PASSWORD, password);
+        long result = db.insert(TABLE_USER, null, contentValues);
         if (result == -1) {
             return false;
         } else {
@@ -183,26 +202,22 @@ public class FoodDBHelper extends SQLiteOpenHelper{
         }
     }
 
-    public Boolean updateUser(int id,String name, String address, String phone, String password){
-        SQLiteDatabase MyDatabase = this.getWritableDatabase();
-        ContentValues contentValues = new ContentValues();
-        contentValues.put("name", name);
-        contentValues.put("address", address);
-        contentValues.put("phone", phone);
-        contentValues.put("password", password);
-        String selection = "id = ?";
-        String[] selectionArgs = { String.valueOf(id) };
-        long result = MyDatabase.update("users",contentValues, selection, selectionArgs);
-        if (result == -1) {
-            return false;
-        } else {
-            return true;
-        }
-    }
 
     public Boolean checkPhone(String phone){
         SQLiteDatabase MyDatabase = this.getWritableDatabase();
         Cursor cursor = MyDatabase.rawQuery("Select * from users where phone = ?", new String[]{phone});
+        if(cursor.getCount() > 0) {
+            cursor.close();
+            return true;
+        }else {
+            cursor.close();
+            return false;
+        }
+    }
+
+    public Boolean checkEmail(String email){
+        SQLiteDatabase MyDatabase = this.getWritableDatabase();
+        Cursor cursor = MyDatabase.rawQuery("Select * from users where email = ?", new String[]{email});
         if(cursor.getCount() > 0) {
             cursor.close();
             return true;
@@ -225,6 +240,42 @@ public class FoodDBHelper extends SQLiteOpenHelper{
             cursor.close();
         }
         return 0;
+    }
+
+    @SuppressLint("Range")
+    public int checkEmailPassword(String email, String password){
+        SQLiteDatabase MyDatabase = this.getWritableDatabase();
+        Cursor cursor = MyDatabase.rawQuery("Select id, password from users where email = ?", new String[]{email});
+        if (cursor != null && cursor.moveToFirst()) {
+            if (Objects.equals(password, cursor.getString(cursor.getColumnIndex("password")))) {
+                int id = cursor.getInt(cursor.getColumnIndex("id"));
+                cursor.close();
+                return id;
+            }
+            cursor.close();
+        }
+        return 0;
+    }
+
+    @SuppressLint("Range")
+    public User getUserById(int id) {
+        User user = new User();
+        SQLiteDatabase db = this.getReadableDatabase();
+        String[] columns = {COLUMN_USER_NAME, COLUMN_USER_ADDRESS, COLUMN_USER_EMAIL, COLUMN_USER_PHONE};
+        String selection = COLUMN_USER_ID + " = ?";
+        String[] selectionArgs = {String.valueOf(id)};
+        Cursor cursor = db.query(TABLE_USER, columns, selection, selectionArgs, null, null, null);
+        if (cursor != null && cursor.moveToFirst()) {
+            user.setId(id);
+            user.setName(cursor.getString(cursor.getColumnIndex(COLUMN_USER_NAME)));
+            user.setAddress(cursor.getString(cursor.getColumnIndex(COLUMN_USER_ADDRESS)));
+            user.setEmail(cursor.getString(cursor.getColumnIndex(COLUMN_USER_EMAIL)));
+            user.setPhone(cursor.getString(cursor.getColumnIndex(COLUMN_USER_PHONE)));
+        }
+        if (cursor != null) {
+            cursor.close();
+        }
+        return user;
     }
 
 }
