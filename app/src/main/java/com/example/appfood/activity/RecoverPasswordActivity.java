@@ -54,9 +54,9 @@ public class RecoverPasswordActivity extends AppCompatActivity {
                         User user = db.getUserByEmail(email);
                         String password = user.getPassword();
                         sendForgotPassword(email,password);
-                        Toast.makeText(RecoverPasswordActivity.this, "Yêu cầu gửi lại mật khẩu thành công!", Toast.LENGTH_SHORT).show();
+                        Toast.makeText(RecoverPasswordActivity.this, "Yêu cầu gửi lại mật khẩu thành công !", Toast.LENGTH_SHORT).show();
                     }else {
-                        Toast.makeText(RecoverPasswordActivity.this, "Email chưa được đăng ký. Vui lòng kiểm tra lại!", Toast.LENGTH_SHORT).show();
+                        Toast.makeText(RecoverPasswordActivity.this, "Email chưa được đăng ký. Vui lòng kiểm tra lại !", Toast.LENGTH_SHORT).show();
                     }
                 }
             }
@@ -75,10 +75,10 @@ public class RecoverPasswordActivity extends AppCompatActivity {
         String email = editTextEmail.getText().toString().trim();
 
         if (email.isEmpty()) {
-            editTextEmail.setError("Vui lòng nhập email!");
+            editTextEmail.setError("Vui lòng nhập email !");
             return false;
         } else if (!Patterns.EMAIL_ADDRESS.matcher(email).matches()) {
-            editTextEmail.setError("Vui lòng nhập email hợp lệ!");
+            editTextEmail.setError("Vui lòng nhập email hợp lệ !");
             return false;
         }
 

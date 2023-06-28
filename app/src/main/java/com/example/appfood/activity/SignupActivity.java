@@ -62,7 +62,7 @@ public class SignupActivity extends AppCompatActivity {
                     String confirmPassword = binding.signupConfirm.getText().toString().trim();
 
                     if(name.equals("")||address.equals("")||email.equals("")||phone.equals("")||password.equals("")||confirmPassword.equals(""))
-                        Toast.makeText(SignupActivity.this, "Dữ liệu không được để trống. Vui lòng kiểm tra lại!", Toast.LENGTH_SHORT).show();
+                        Toast.makeText(SignupActivity.this, "Dữ liệu không được để trống. Vui lòng kiểm tra lại !", Toast.LENGTH_SHORT).show();
                     else{
                         if(password.equals(confirmPassword)){
                             Boolean checkPhone = db.checkPhone(phone);
@@ -71,22 +71,22 @@ public class SignupActivity extends AppCompatActivity {
                                 if(checkPhone == false){
                                     Boolean insert = db.insertUser(name,address,email,phone,password);
                                     if(insert==true){
-                                        Toast.makeText(SignupActivity.this, "Đăng ký thành công!", Toast.LENGTH_SHORT).show();
+                                        Toast.makeText(SignupActivity.this, "Đăng ký thành công !", Toast.LENGTH_SHORT).show();
                                         Intent intent = new Intent(getApplicationContext(),LoginActivity.class);
                                         startActivity(intent);
                                         sendRegistrationSuccessEmail(email);
                                     }else{
-                                        Toast.makeText(SignupActivity.this, "Đăng kí không thành công!", Toast.LENGTH_SHORT).show();
+                                        Toast.makeText(SignupActivity.this, "Đăng kí không thành công !", Toast.LENGTH_SHORT).show();
                                     }
                                 }
                                 else{
-                                    Toast.makeText(SignupActivity.this, "Số điện thoại đã được đăng ký. Vui lòng kiểm tra lại!", Toast.LENGTH_SHORT).show();
+                                    Toast.makeText(SignupActivity.this, "Số điện thoại đã được đăng ký. Vui lòng kiểm tra lại !", Toast.LENGTH_SHORT).show();
                                 }
                             }else {
-                                Toast.makeText(SignupActivity.this, "Email đã được đăng ký. Vui lòng kiểm tra lại!", Toast.LENGTH_SHORT).show();
+                                Toast.makeText(SignupActivity.this, "Email đã được đăng ký. Vui lòng kiểm tra lại !", Toast.LENGTH_SHORT).show();
                             }
                         }else{
-                            Toast.makeText(SignupActivity.this, "Mật khẩu nhập lại không đúng. Vui lòng kiểm tra lại!", Toast.LENGTH_SHORT).show();
+                            Toast.makeText(SignupActivity.this, "Mật khẩu nhập lại không đúng. Vui lòng kiểm tra lại !", Toast.LENGTH_SHORT).show();
                         }
                     }
                 }
