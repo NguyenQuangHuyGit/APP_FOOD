@@ -14,11 +14,14 @@ import android.widget.Toast;
 import android.widget.ViewFlipper;
 
 import com.example.appfood.R;
+import com.example.appfood.Session.SessionCart;
 import com.example.appfood.adapter.cardItemAdapter;
 import com.example.appfood.adapter.foodItemAdapter;
 import com.example.appfood.database.FoodDBHelper;
+import com.example.appfood.model.Cart;
 import com.example.appfood.model.Food;
 
+import java.util.ArrayList;
 import java.util.List;
 
 public class CartActivity extends AppCompatActivity {
@@ -29,6 +32,8 @@ public class CartActivity extends AppCompatActivity {
     cardItemAdapter adapter;
     ImageButton btnBack;
 
+    SessionCart sessionCart;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -36,6 +41,7 @@ public class CartActivity extends AppCompatActivity {
         setVariable();
         setRecycleView();
         setEvent();
+        getData();
     }
 
     private void setVariable(){
@@ -43,13 +49,14 @@ public class CartActivity extends AppCompatActivity {
         foodDB = new FoodDBHelper(this);
         foodDB.insertFood();
         listCart = (RecyclerView) findViewById(R.id.detailCartLayout);
+        sessionCart = new SessionCart(this);
+        arrayFood = new ArrayList<>();
     }
 
     private void setRecycleView(){
         LinearLayoutManager layoutManager = new LinearLayoutManager(CartActivity.this);
         listCart.setLayoutManager(layoutManager);
         listCart.setHasFixedSize(true);
-        arrayFood = foodDB.getAllFoods();
         adapter = new cardItemAdapter(CartActivity.this,arrayFood);
         listCart.setAdapter(adapter);
     }
@@ -61,5 +68,15 @@ public class CartActivity extends AppCompatActivity {
                 CartActivity.super.onBackPressed();
             }
         });
+    }
+    public void getData(){
+        Cart cart = new Cart();
+        cart = sessionCart.getCart();
+        Food food;
+        List<Integer> itemIds = cart.getItemIds();
+        for (int i = 0; i < itemIds.size(); i++) {
+            food = foodDB.getById(itemIds.get(i));
+            arrayFood.add(food);
+        }
     }
 }

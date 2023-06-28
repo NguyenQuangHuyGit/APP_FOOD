@@ -195,13 +195,15 @@
                 android:paddingTop="5dp"
                 android:paddingBottom="5dp">
 
-                <ImageView
+                <ImageButton
                     android:id="@+id/btnMinus"
                     android:layout_width="wrap_content"
                     android:layout_height="match_parent"
                     android:layout_marginStart="10dp"
                     android:alpha="0.3"
-                    android:src="@drawable/minus_ic" />
+                    android:src="@drawable/minus_ic"
+                    android:background="#ffffff"
+                    android:enabled="false"/>
 
                 <TextView
                     android:id="@+id/txtCount"
@@ -214,12 +216,13 @@
                     android:textStyle="bold"
                     android:textSize="18sp" />
 
-                <ImageView
+                <ImageButton
                     android:id="@+id/btnPlus"
                     android:layout_width="wrap_content"
                     android:layout_height="match_parent"
                     android:layout_marginEnd="10dp"
-                    android:src="@drawable/plus_ic" />
+                    android:src="@drawable/plus_ic"
+                    android:background="#ffffff"/>
             </LinearLayout>
 
         </LinearLayout>
