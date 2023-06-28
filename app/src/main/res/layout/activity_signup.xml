@@ -4,7 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@drawable/backgroud"
+    android:background="@drawable/bg_signup"
     tools:context=".activity.SignupActivity">
 
     <LinearLayout
@@ -15,9 +15,45 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.9"
+        app:layout_constraintVertical_bias="0.7"
         android:layout_marginHorizontal="20dp"
         android:gravity="center">
+
+        <EditText
+            android:id="@+id/signup_name"
+            android:layout_width="350dp"
+            android:layout_height="60dp"
+            android:layout_marginTop="30dp"
+            android:background="@drawable/lavender_border"
+            android:drawableLeft="@drawable/person_ic"
+            android:drawablePadding="8dp"
+            android:hint="Họ và Tên"
+            android:inputType="text"
+            android:padding="8dp" />
+
+        <EditText
+            android:id="@+id/signup_address"
+            android:layout_width="350dp"
+            android:layout_height="60dp"
+            android:layout_marginTop="30dp"
+            android:background="@drawable/lavender_border"
+            android:drawableLeft="@drawable/home_ic"
+            android:drawablePadding="8dp"
+            android:hint="Địa chỉ"
+            android:inputType="text"
+            android:padding="8dp" />
+
+        <EditText
+            android:id="@+id/signup_email"
+            android:layout_width="350dp"
+            android:layout_height="60dp"
+            android:layout_marginTop="30dp"
+            android:background="@drawable/lavender_border"
+            android:drawableLeft="@drawable/email_ic"
+            android:drawablePadding="8dp"
+            android:hint="Email"
+            android:inputType="text"
+            android:padding="8dp" />
 
         <EditText
             android:id="@+id/signup_phone"
@@ -27,8 +63,8 @@
             android:background="@drawable/lavender_border"
             android:drawableLeft="@drawable/phone_ic"
             android:drawablePadding="8dp"
-            android:hint="Phone"
-            android:inputType="number"
+            android:hint="Số điện thoại"
+            android:inputType="text"
             android:padding="8dp" />
 
         <EditText
@@ -39,7 +75,7 @@
             android:background="@drawable/lavender_border"
             android:drawableLeft="@drawable/lock"
             android:drawablePadding="8dp"
-            android:hint="Password"
+            android:hint="Mật khẩu"
             android:inputType="textPassword"
             android:padding="8dp" />
 
@@ -51,18 +87,26 @@
             android:background="@drawable/lavender_border"
             android:drawableLeft="@drawable/password"
             android:drawablePadding="8dp"
-            android:hint="Confirm Password"
+            android:hint="Nhập lại mật khẩu"
             android:inputType="textPassword"
             android:padding="8dp" />
 
         <Button
             android:id="@+id/signup_button"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
+            android:layout_width="350dp"
+            android:layout_height="70dp"
             android:layout_marginTop="30dp"
             android:backgroundTint="@color/black"
-            android:paddingVertical="15dp"
-            android:text="Sign Up"
+            android:text="Đăng ký"
+            android:textSize="18sp"
+            app:cornerRadius="30dp" />
+
+        <Button
+            android:id="@+id/back_button"
+            android:layout_width="350dp"
+            android:layout_height="70dp"
+            android:backgroundTint="@color/black"
+            android:text="Quay lại"
             android:textSize="18sp"
             app:cornerRadius="30dp" />
 
@@ -73,7 +117,7 @@
             android:layout_gravity="center"
             android:layout_marginTop="8dp"
             android:padding="8dp"
-            android:text="Already an user? Login"
+            android:text="Bạn đã có tài khoản? Đăng nhập"
             android:textColor="@color/black"
             android:textSize="18sp"
             android:textStyle="bold" />

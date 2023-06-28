@@ -17,7 +17,7 @@
         <item
             android:title="Đăng xuất"
             android:id="@+id/btnLogout"
-            android:icon="@drawable/account_ic"
+            android:icon="@drawable/logout_ic"
             android:visible="false"/>
         <item
             android:id="@+id/btnShutdown"

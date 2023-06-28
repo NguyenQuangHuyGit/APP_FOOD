@@ -146,8 +146,8 @@ public class MainActivity extends AppCompatActivity {
                     return true;
                 }
                 if(itemId == R.id.btnAccount){
-                    Toast toast = Toast.makeText(getApplicationContext(),"Account",Toast.LENGTH_SHORT);
-                    toast.show();
+                    Intent account = new Intent(MainActivity.this, AccountActivity.class);
+                    startActivity(account);
                     return true;
                 }
                 if(itemId == R.id.btnLogout){
