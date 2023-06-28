@@ -11,6 +11,7 @@ import android.widget.Button;
 import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.example.appfood.R;
 import com.example.appfood.Session.SessionCart;
@@ -20,23 +21,19 @@ import com.example.appfood.model.Food;
 import java.text.DecimalFormat;
 
 public class DetailItemActivity extends AppCompatActivity {
-
     ImageView image;
     TextView txtName;
     TextView txtPrice;
     TextView txtDescription;
-
     TextView txtCount;
     ImageButton btnPlus;
     ImageButton btnMinus;
-
     Button btnAddCart;
     Intent intent;
     FoodDBHelper foodDB;
     Food food;
     ImageButton btnBack;
     DecimalFormat decimalFormat = new DecimalFormat("###,###,###");
-
     SessionCart sessionCart;
 
     @Override
@@ -117,6 +114,7 @@ public class DetailItemActivity extends AppCompatActivity {
                 Cart cart = new Cart();
                 cart.updateItem(id,amount);
                 sessionCart.setCart(cart);
+                Toast.makeText(DetailItemActivity.this, "Thêm vào giỏ hàng thành công!", Toast.LENGTH_SHORT).show();
                 Intent intent = new Intent(DetailItemActivity.this, MainActivity.class);
                 startActivity(intent);
             }

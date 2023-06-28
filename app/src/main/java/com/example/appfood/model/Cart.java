@@ -10,25 +10,33 @@ public class Cart {
     public static List<Integer> itemIds = new ArrayList<>();
 
     public void updateItem(int id, int amount){
-        if (!itemIds.contains(id)){
-            itemIds.add(id);
+        if (itemIds.contains(id)){
+            items.put(id,items.get(id)+amount);
+            return;
         }
+        itemIds.add(id);
         items.put(id,amount);
     }
-//    public void updateCart(int id,int amount){
-//        items.put(id,amount);
-//    }
+
+    public void fixItem(int id, int amount){
+        items.put(id,amount);
+    }
+
     public void removeFromCart(int id){
-        int currentAmount = items.get(id);
-        if(currentAmount==1){
-            items.remove(id);
-            itemIds.remove(id);
-        }
-        else {
-            updateItem(id,--currentAmount);
+        items.remove(id);
+        for(int i =0;i<itemIds.size();i++){
+            if(itemIds.get(i) == id){
+                itemIds.remove(i);
+                break;
+            }
         }
     }
+
     public List<Integer> getItemIds(){
         return  this.itemIds;
+    }
+
+    public Map<Integer, Integer> getItems() {
+        return items;
     }
 }

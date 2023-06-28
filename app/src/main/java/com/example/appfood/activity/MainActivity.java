@@ -22,6 +22,7 @@ import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.appfood.R;
+import com.example.appfood.Session.SessionCart;
 import com.example.appfood.Session.SessionUser;
 import com.example.appfood.adapter.foodItemAdapter;
 import com.example.appfood.database.FoodDBHelper;
@@ -36,6 +37,7 @@ import java.util.Objects;
 public class MainActivity extends AppCompatActivity {
 
     List<Food> arrayFood;
+    List<Integer> foodIds;
     RecyclerView listFood;
     DrawerLayout drawerLayout;
     foodItemAdapter adapter;
@@ -44,8 +46,8 @@ public class MainActivity extends AppCompatActivity {
     Toolbar toolbar;
     FloatingActionButton btnCart;
     NavigationView navigationView;
-
     SessionUser sessionUser;
+    SessionCart sessionCart;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -55,6 +57,17 @@ public class MainActivity extends AppCompatActivity {
         setViewFlipper();
         setRecycleView();
         setEvent();
+        setUser();
+        setBtnCart();
+    }
+    @Override
+    protected void onDestroy(){
+        super.onDestroy();
+        sessionUser.clear();
+        sessionCart.clear();
+    }
+
+    private void setUser(){
         String userId = sessionUser.getUserId();
         if(userId != null){
             Menu menu = navigationView.getMenu();
@@ -63,11 +76,6 @@ public class MainActivity extends AppCompatActivity {
             menu.findItem(R.id.btnLogout).setVisible(true);
             menu.findItem(R.id.btnAccount).setVisible(true);
         }
-    }
-    @Override
-    protected void onDestroy(){
-        super.onDestroy();
-        sessionUser.clear();
     }
 
     private void setRecycleView(){
@@ -89,6 +97,7 @@ public class MainActivity extends AppCompatActivity {
         listFood = (RecyclerView) findViewById(R.id.listFood);
         navigationView = (NavigationView) findViewById(R.id.navigationView);
         sessionUser = new SessionUser(this);
+        sessionCart = new SessionCart(this);
     }
 
     private void setNavigation(){
@@ -121,6 +130,17 @@ public class MainActivity extends AppCompatActivity {
         Animation slide_out = AnimationUtils.loadAnimation(getApplicationContext(),R.anim.slide_out);
         viewFlipper.setOutAnimation(slide_in);
         viewFlipper.setOutAnimation(slide_out);
+    }
+
+    private void setBtnCart(){
+        if(sessionCart.getCart() == null){
+            btnCart.setVisibility(View.INVISIBLE);
+        }else{
+            foodIds = sessionCart.getCart().getItemIds();
+            if (foodIds.size() == 0) {
+                btnCart.setVisibility(View.INVISIBLE);
+            }
+        }
     }
 
     private void setEvent(){

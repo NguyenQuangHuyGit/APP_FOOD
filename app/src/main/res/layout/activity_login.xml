@@ -28,7 +28,9 @@
             android:background="@drawable/lavender_border"
             android:drawableLeft="@drawable/phone_ic"
             android:drawablePadding="8dp"
-            android:inputType="text"
+            android:textColor="@color/black"
+            android:textColorHint="@color/black"
+            android:inputType="number"
             android:hint="Số điện thoại/ Email"
             android:padding="8dp" />
 
@@ -40,6 +42,8 @@
             android:background="@drawable/lavender_border"
             android:drawableLeft="@drawable/lock"
             android:drawablePadding="8dp"
+            android:textColorHint="@color/black"
+            android:textColor="@color/black"
             android:hint="Mật khẩu"
             android:inputType="textPassword"
             android:padding="8dp" />
@@ -51,6 +55,7 @@
             android:layout_marginTop="30dp"
             android:backgroundTint="@color/black"
             android:text="Đăng nhập"
+            android:textColor="#ffffff"
             android:textSize="18sp"
             app:cornerRadius="30dp" />
         <Button
@@ -60,6 +65,7 @@
             android:backgroundTint="@color/black"
             android:text="Quay lại"
             android:textSize="18sp"
+            android:textColor="#ffffff"
             app:cornerRadius="30dp" />
 
         <TextView

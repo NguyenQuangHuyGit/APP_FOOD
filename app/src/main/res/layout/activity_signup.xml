@@ -28,18 +28,22 @@
             android:drawableLeft="@drawable/person_ic"
             android:drawablePadding="8dp"
             android:hint="Họ và Tên"
+            android:textColorHint="@color/black"
             android:inputType="text"
+            android:textColor="@color/black"
             android:padding="8dp" />
 
         <EditText
             android:id="@+id/signup_address"
             android:layout_width="350dp"
             android:layout_height="60dp"
+            android:textColor="@color/black"
             android:layout_marginTop="30dp"
             android:background="@drawable/lavender_border"
             android:drawableLeft="@drawable/home_ic"
             android:drawablePadding="8dp"
             android:hint="Địa chỉ"
+            android:textColorHint="@color/black"
             android:inputType="text"
             android:padding="8dp" />
 
@@ -51,6 +55,8 @@
             android:background="@drawable/lavender_border"
             android:drawableLeft="@drawable/email_ic"
             android:drawablePadding="8dp"
+            android:textColorHint="@color/black"
+            android:textColor="@color/black"
             android:hint="Email"
             android:inputType="text"
             android:padding="8dp" />
@@ -63,18 +69,22 @@
             android:background="@drawable/lavender_border"
             android:drawableLeft="@drawable/phone_ic"
             android:drawablePadding="8dp"
+            android:textColorHint="@color/black"
+            android:textColor="@color/black"
             android:hint="Số điện thoại"
-            android:inputType="text"
+            android:inputType="number"
             android:padding="8dp" />
 
         <EditText
             android:id="@+id/signup_password"
             android:layout_width="350dp"
             android:layout_height="60dp"
+            android:textColorHint="@color/black"
             android:layout_marginTop="20dp"
             android:background="@drawable/lavender_border"
             android:drawableLeft="@drawable/lock"
             android:drawablePadding="8dp"
+            android:textColor="@color/black"
             android:hint="Mật khẩu"
             android:inputType="textPassword"
             android:padding="8dp" />
@@ -87,6 +97,8 @@
             android:background="@drawable/lavender_border"
             android:drawableLeft="@drawable/password"
             android:drawablePadding="8dp"
+            android:textColorHint="@color/black"
+            android:textColor="@color/black"
             android:hint="Nhập lại mật khẩu"
             android:inputType="textPassword"
             android:padding="8dp" />
@@ -98,6 +110,7 @@
             android:layout_marginTop="30dp"
             android:backgroundTint="@color/black"
             android:text="Đăng ký"
+            android:textColor="#ffffff"
             android:textSize="18sp"
             app:cornerRadius="30dp" />
 
@@ -107,6 +120,7 @@
             android:layout_height="70dp"
             android:backgroundTint="@color/black"
             android:text="Quay lại"
+            android:textColor="#ffffff"
             android:textSize="18sp"
             app:cornerRadius="30dp" />
 
