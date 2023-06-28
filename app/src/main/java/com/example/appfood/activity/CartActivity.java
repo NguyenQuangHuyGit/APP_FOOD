@@ -23,6 +23,7 @@ import com.example.appfood.model.Food;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 
 public class CartActivity extends AppCompatActivity {
 
@@ -31,17 +32,17 @@ public class CartActivity extends AppCompatActivity {
     FoodDBHelper foodDB;
     cardItemAdapter adapter;
     ImageButton btnBack;
-
     SessionCart sessionCart;
-
+    Map<Integer, Integer> itemCarts;
+    Cart cart;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_cart);
         setVariable();
+        getData();
         setRecycleView();
         setEvent();
-        getData();
     }
 
     private void setVariable(){
@@ -57,7 +58,7 @@ public class CartActivity extends AppCompatActivity {
         LinearLayoutManager layoutManager = new LinearLayoutManager(CartActivity.this);
         listCart.setLayoutManager(layoutManager);
         listCart.setHasFixedSize(true);
-        adapter = new cardItemAdapter(CartActivity.this,arrayFood);
+        adapter = new cardItemAdapter(CartActivity.this,arrayFood,cart);
         listCart.setAdapter(adapter);
     }
 
@@ -70,8 +71,9 @@ public class CartActivity extends AppCompatActivity {
         });
     }
     public void getData(){
-        Cart cart = new Cart();
+        cart = new Cart();
         cart = sessionCart.getCart();
+        itemCarts = cart.getItems();
         Food food;
         List<Integer> itemIds = cart.getItemIds();
         for (int i = 0; i < itemIds.size(); i++) {
