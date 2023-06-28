@@ -16,12 +16,23 @@ import com.example.appfood.R;
 import com.example.appfood.database.FoodDBHelper;
 import com.example.appfood.databinding.ActivitySignupBinding;
 
+import java.util.Properties;
 import java.util.regex.Pattern;
+
+import javax.mail.Authenticator;
+import javax.mail.Message;
+import javax.mail.MessagingException;
+import javax.mail.PasswordAuthentication;
+import javax.mail.Session;
+import javax.mail.Transport;
+import javax.mail.internet.AddressException;
+import javax.mail.internet.InternetAddress;
+import javax.mail.internet.MimeMessage;
 
 
 public class SignupActivity extends AppCompatActivity {
-    FoodDBHelper db;
-    ActivitySignupBinding binding;
+    private FoodDBHelper db;
+    private ActivitySignupBinding binding;
     private EditText etName, etAddress, etEmail, etPhone, etPassword, etConfirmPassword;
 
     @Override
@@ -55,19 +66,24 @@ public class SignupActivity extends AppCompatActivity {
                     else{
                         if(password.equals(confirmPassword)){
                             Boolean checkPhone = db.checkPhone(phone);
-                            if(checkPhone == false){
-                                Boolean insert = db.insertUser(name,address,email,phone,password);
-                                if(insert==true){
-                                    Toast.makeText(SignupActivity.this, "Đăng ký thành công!", Toast.LENGTH_SHORT).show();
-                                    Intent intent = new Intent(getApplicationContext(),LoginActivity.class);
-                                    startActivity(intent);
-                                    sendRegistrationSuccessSMS(phone);
-                                }else{
-                                    Toast.makeText(SignupActivity.this, "Đăng kí không thành công!", Toast.LENGTH_SHORT).show();
+                            Boolean checkEmail = db.checkEmail(email);
+                            if(checkEmail == false){
+                                if(checkPhone == false){
+                                    Boolean insert = db.insertUser(name,address,email,phone,password);
+                                    if(insert==true){
+                                        Toast.makeText(SignupActivity.this, "Đăng ký thành công!", Toast.LENGTH_SHORT).show();
+                                        Intent intent = new Intent(getApplicationContext(),LoginActivity.class);
+                                        startActivity(intent);
+                                        sendRegistrationSuccessEmail(email);
+                                    }else{
+                                        Toast.makeText(SignupActivity.this, "Đăng kí không thành công!", Toast.LENGTH_SHORT).show();
+                                    }
                                 }
-                            }
-                            else{
-                                Toast.makeText(SignupActivity.this, "Người dùng đã tồn tại. Đăng nhập ngay!", Toast.LENGTH_SHORT).show();
+                                else{
+                                    Toast.makeText(SignupActivity.this, "Số điện thoại đã được đăng ký. Vui lòng kiểm tra lại!", Toast.LENGTH_SHORT).show();
+                                }
+                            }else {
+                                Toast.makeText(SignupActivity.this, "Email đã được đăng ký. Vui lòng kiểm tra lại!", Toast.LENGTH_SHORT).show();
                             }
                         }else{
                             Toast.makeText(SignupActivity.this, "Mật khẩu nhập lại không đúng. Vui lòng kiểm tra lại!", Toast.LENGTH_SHORT).show();
@@ -159,8 +175,52 @@ public class SignupActivity extends AppCompatActivity {
             etConfirmPassword.setError("Mật khẩu không khớp");
             return false;
         }
-
         return true;
+    }
+
+    private void sendRegistrationSuccessEmail(String email){
+        try {
+            String stringSenderEmail = "hungb.z98@gmail.com";
+            String stringReceiverEmail = email;
+            String stringPasswordSenderEmail = "xtnmyflmidrgxiif";
+            String stringHost = "smtp.gmail.com";
+
+            Properties properties = System.getProperties();
+            properties.put("mail.smtp.host", stringHost);
+            properties.put("mail.smtp.port", "465");
+            properties.put("mail.smtp.ssl.enable", "true");
+            properties.put("mail.smtp.auth", "true");
+
+            javax.mail.Session session = Session.getInstance(properties, new Authenticator() {
+                @Override
+                protected PasswordAuthentication getPasswordAuthentication() {
+                    return new PasswordAuthentication(stringSenderEmail, stringPasswordSenderEmail);
+                }
+            });
+
+            MimeMessage mimeMessage = new MimeMessage(session);
+            mimeMessage.addRecipient(Message.RecipientType.TO, new InternetAddress(stringReceiverEmail));
+
+            mimeMessage.setSubject("[Food HVH] Đăng ký tài khoản thành công!");
+            mimeMessage.setText("Xin chào quý khách, \n\nChúc mừng quý khách đã đăng ký thành công tài khoản app food HVH. \nChúc quý khách có những bữa ăn ngon miệng!\n\nTrân trọng.");
+
+            Thread thread = new Thread(new Runnable() {
+                @Override
+                public void run() {
+                    try {
+                        Transport.send(mimeMessage);
+                    } catch (MessagingException e) {
+                        e.printStackTrace();
+                    }
+                }
+            });
+            thread.start();
+
+        } catch (AddressException e) {
+            e.printStackTrace();
+        } catch (MessagingException e) {
+            e.printStackTrace();
+        }
     }
 }
 

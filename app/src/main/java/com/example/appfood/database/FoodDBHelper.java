@@ -261,7 +261,7 @@ public class FoodDBHelper extends SQLiteOpenHelper{
     public User getUserById(int id) {
         User user = new User();
         SQLiteDatabase db = this.getReadableDatabase();
-        String[] columns = {COLUMN_USER_NAME, COLUMN_USER_ADDRESS, COLUMN_USER_EMAIL, COLUMN_USER_PHONE};
+        String[] columns = {COLUMN_USER_NAME, COLUMN_USER_ADDRESS, COLUMN_USER_EMAIL, COLUMN_USER_PHONE,COLUMN_USER_PASSWORD};
         String selection = COLUMN_USER_ID + " = ?";
         String[] selectionArgs = {String.valueOf(id)};
         Cursor cursor = db.query(TABLE_USER, columns, selection, selectionArgs, null, null, null);
@@ -271,12 +271,36 @@ public class FoodDBHelper extends SQLiteOpenHelper{
             user.setAddress(cursor.getString(cursor.getColumnIndex(COLUMN_USER_ADDRESS)));
             user.setEmail(cursor.getString(cursor.getColumnIndex(COLUMN_USER_EMAIL)));
             user.setPhone(cursor.getString(cursor.getColumnIndex(COLUMN_USER_PHONE)));
+            user.setPassword(cursor.getString(cursor.getColumnIndex(COLUMN_USER_PASSWORD)));
         }
         if (cursor != null) {
             cursor.close();
         }
         return user;
     }
+
+    @SuppressLint("Range")
+    public User getUserByEmail(String email) {
+        User user = new User();
+        SQLiteDatabase db = this.getReadableDatabase();
+        String[] columns = {COLUMN_USER_ID, COLUMN_USER_NAME, COLUMN_USER_ADDRESS, COLUMN_USER_EMAIL, COLUMN_USER_PHONE, COLUMN_USER_PASSWORD};
+        String selection = COLUMN_USER_EMAIL + " = ?";
+        String[] selectionArgs = {email};
+        Cursor cursor = db.query(TABLE_USER, columns, selection, selectionArgs, null, null, null);
+        if (cursor != null && cursor.moveToFirst()) {
+            user.setId(cursor.getInt(cursor.getColumnIndex(COLUMN_USER_ID)));
+            user.setName(cursor.getString(cursor.getColumnIndex(COLUMN_USER_NAME)));
+            user.setAddress(cursor.getString(cursor.getColumnIndex(COLUMN_USER_ADDRESS)));
+            user.setEmail(cursor.getString(cursor.getColumnIndex(COLUMN_USER_EMAIL)));
+            user.setPhone(cursor.getString(cursor.getColumnIndex(COLUMN_USER_PHONE)));
+            user.setPassword(cursor.getString(cursor.getColumnIndex(COLUMN_USER_PASSWORD)));
+        }
+        if (cursor != null) {
+            cursor.close();
+        }
+        return user;
+    }
+
 
 }
 
