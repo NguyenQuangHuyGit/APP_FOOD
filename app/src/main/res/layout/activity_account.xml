@@ -11,13 +11,14 @@
         android:id="@+id/linearLayout2"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        app:layout_constraintVertical_bias="0.0"
         android:background="#ffffff"
         android:orientation="vertical"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent">
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.0">
 
         <androidx.appcompat.widget.Toolbar
             android:id="@+id/tbarCart"
@@ -58,10 +59,10 @@
 
         <ImageView
             android:id="@+id/imageView6"
-            android:layout_marginTop="30dp"
-            android:layout_width="100dp"
-            android:layout_height="100dp"
+            android:layout_width="150dp"
+            android:layout_height="150dp"
             android:layout_gravity="center"
+            android:layout_marginTop="30dp"
             android:src="@drawable/user" />
 
 
@@ -69,33 +70,36 @@
             android:id="@+id/textView4"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginTop="50dp"
             android:layout_marginLeft="10dp"
+            android:layout_marginTop="50dp"
             android:layout_marginRight="10dp"
             android:text="Tên :"
-            android:textStyle="bold"
-            android:textSize="20dp"
-            android:textColor="@color/black"/>
+            android:textColor="@color/black"
+            android:textSize="15dp"
+            android:textStyle="bold" />
 
-        <TextView
+        <EditText
             android:id="@+id/tvName"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginLeft="10dp"
             android:layout_marginRight="10dp"
-            android:textSize="24sp"
-            android:textStyle="bold"
+            android:layout_marginBottom="8dp"
+            android:background="@drawable/lavender_border"
+            android:padding="8dp"
             android:textColor="@color/black"
-            android:layout_marginBottom="8dp" />
+            android:layout_marginTop="5dp"
+            android:textSize="20sp"
+            android:textStyle="bold" />
 
         <View
             android:layout_width="match_parent"
             android:layout_height="1dp"
             android:layout_marginLeft="10dp"
-            android:layout_marginRight="10dp"
-            android:background="@android:color/darker_gray"
             android:layout_marginTop="8dp"
-            android:layout_marginBottom="8dp" />
+            android:layout_marginRight="10dp"
+            android:layout_marginBottom="8dp"
+            android:background="@android:color/darker_gray" />
 
         <TextView
             android:id="@+id/textView5"
@@ -104,29 +108,32 @@
             android:layout_marginLeft="10dp"
             android:layout_marginRight="10dp"
             android:text="Địa chỉ :"
-            android:textStyle="bold"
-            android:textSize="20dp"
-            android:textColor="@color/black"/>
+            android:textColor="@color/black"
+            android:textSize="15dp"
+            android:textStyle="bold" />
 
-        <TextView
+        <EditText
             android:id="@+id/tvAddress"
-            android:layout_width="wrap_content"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginLeft="10dp"
             android:layout_marginRight="10dp"
-            android:textSize="24sp"
-            android:textStyle="bold"
+            android:layout_marginBottom="8dp"
             android:textColor="@color/black"
-            android:layout_marginBottom="8dp" />
+            android:layout_marginTop="5dp"
+            android:padding="8dp"
+            android:background="@drawable/lavender_border"
+            android:textSize="20sp"
+            android:textStyle="bold" />
 
         <View
             android:layout_width="match_parent"
             android:layout_height="1dp"
-            android:background="@android:color/darker_gray"
             android:layout_marginLeft="10dp"
-            android:layout_marginRight="10dp"
             android:layout_marginTop="8dp"
-            android:layout_marginBottom="8dp" />
+            android:layout_marginRight="10dp"
+            android:layout_marginBottom="8dp"
+            android:background="@android:color/darker_gray" />
 
         <TextView
             android:id="@+id/textView7"
@@ -135,29 +142,32 @@
             android:layout_marginLeft="10dp"
             android:layout_marginRight="10dp"
             android:text="Số điện thoại :"
-            android:textStyle="bold"
-            android:textSize="20dp"
-            android:textColor="@color/black"/>
+            android:textColor="@color/black"
+            android:textSize="15dp"
+            android:textStyle="bold" />
 
-        <TextView
+        <EditText
             android:id="@+id/tvPhone"
-            android:layout_width="wrap_content"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginLeft="10dp"
             android:layout_marginRight="10dp"
-            android:textSize="24sp"
-            android:textStyle="bold"
+            android:layout_marginBottom="8dp"
             android:textColor="@color/black"
-            android:layout_marginBottom="8dp" />
+            android:padding="8dp"
+            android:layout_marginTop="5dp"
+            android:background="@drawable/lavender_border"
+            android:textSize="20sp"
+            android:textStyle="bold" />
 
         <View
             android:layout_width="match_parent"
             android:layout_height="1dp"
-            android:background="@android:color/darker_gray"
             android:layout_marginLeft="10dp"
-            android:layout_marginRight="10dp"
             android:layout_marginTop="8dp"
-            android:layout_marginBottom="8dp" />
+            android:layout_marginRight="10dp"
+            android:layout_marginBottom="8dp"
+            android:background="@android:color/darker_gray" />
 
         <TextView
             android:id="@+id/textView8"
@@ -166,34 +176,47 @@
             android:layout_marginLeft="10dp"
             android:layout_marginRight="10dp"
             android:text="Email :"
-            android:textStyle="bold"
-            android:textSize="20dp"
-            android:textColor="@color/black"/>
+            android:textColor="@color/black"
+            android:textSize="15dp"
+            android:textStyle="bold" />
 
-        <TextView
+        <EditText
             android:id="@+id/tvEmail"
-            android:layout_width="wrap_content"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginLeft="10dp"
             android:layout_marginRight="10dp"
-            android:textSize="24sp"
-            android:textStyle="bold"
+            android:layout_marginBottom="16dp"
             android:textColor="@color/black"
-            android:layout_marginBottom="16dp" />
+            android:layout_marginTop="5dp"
+            android:background="@drawable/lavender_border"
+            android:padding="8dp"
+            android:textSize="20sp"
+            android:textStyle="bold" />
 
         <View
             android:layout_width="match_parent"
             android:layout_height="1dp"
-            android:background="@android:color/darker_gray"
+            android:layout_marginLeft="10dp"
+            android:layout_marginTop="8dp"
+            android:layout_marginRight="10dp"
+            android:layout_marginBottom="8dp"
+            android:background="@android:color/darker_gray" />
+
+        <Button
+            android:id="@+id/button_update"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
             android:layout_marginLeft="10dp"
             android:layout_marginRight="10dp"
-            android:layout_marginTop="8dp"
-            android:layout_marginBottom="8dp" />
+            android:layout_marginTop="10dp"
+            android:text="Cập nhật"
+            android:background="@drawable/lavender_border">
+
+        </Button>
 
 
     </LinearLayout>
-
-
 
 
 </androidx.constraintlayout.widget.ConstraintLayout>
