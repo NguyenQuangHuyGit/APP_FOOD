@@ -9,6 +9,7 @@ import android.view.View;
 import android.view.animation.Animation;
 import android.view.animation.AnimationUtils;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.Toast;
 import android.widget.ViewFlipper;
 
@@ -44,6 +45,7 @@ public class MainActivity extends AppCompatActivity {
     FoodDBHelper foodDB;
     ViewFlipper viewFlipper;
     Toolbar toolbar;
+    LinearLayout location;
     FloatingActionButton btnCart;
     NavigationView navigationView;
     SessionUser sessionUser;
@@ -92,6 +94,7 @@ public class MainActivity extends AppCompatActivity {
         toolbar = (Toolbar) findViewById(R.id.toolbar);
         drawerLayout = findViewById(R.id.drawerlayout);
         btnCart = (FloatingActionButton) findViewById(R.id.btnCart);
+        location = (LinearLayout) findViewById(R.id.location);
         foodDB = new FoodDBHelper(this);
         foodDB.insertFood();
         listFood = (RecyclerView) findViewById(R.id.listFood);
@@ -148,6 +151,13 @@ public class MainActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 Intent intent = new Intent(MainActivity.this, CartActivity.class);
+                startActivity(intent);
+            }
+        });
+        location.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(MainActivity.this, MapActivity.class);
                 startActivity(intent);
             }
         });
