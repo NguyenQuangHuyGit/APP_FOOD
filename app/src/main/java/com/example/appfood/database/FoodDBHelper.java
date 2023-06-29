@@ -11,7 +11,9 @@ import com.example.appfood.R;
 import com.example.appfood.model.Food;
 import com.example.appfood.model.User;
 
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.Objects;
 
 public class FoodDBHelper extends SQLiteOpenHelper{
@@ -60,7 +62,7 @@ public class FoodDBHelper extends SQLiteOpenHelper{
         String createBillTableQuery = "CREATE TABLE IF NOT EXISTS " + TABLE_BILL + " (" +
                 COLUMN_ID + " INTEGER PRIMARY KEY AUTOINCREMENT, " +
                 COLUMN_TOTAL + " TEXT," +
-                COLUMN_DATE + " DATE," +
+                COLUMN_DATE + " TEXT," +
                 COLUMN_ID_USER + " DATE," +
                 "FOREIGN KEY(" + COLUMN_ID_USER + ") REFERENCES " + TABLE_USER + "(" + COLUMN_USER_ID + "))";
         db.execSQL(createBillTableQuery);
@@ -187,6 +189,48 @@ public class FoodDBHelper extends SQLiteOpenHelper{
         db.execSQL("DROP TABLE IF EXISTS " + TABLE_BILL_FOOD);
         db.execSQL("DROP TABLE IF EXISTS " + TABLE_USER);
         onCreate(db);
+    }
+
+    public boolean insertBill(String total, Date date, int idUser){
+        @SuppressLint("SimpleDateFormat") SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+        String dateString = sdf.format(date);
+        SQLiteDatabase db = this.getWritableDatabase();
+        ContentValues contentValues = new ContentValues();
+        contentValues.put(COLUMN_TOTAL, total);
+        contentValues.put(COLUMN_DATE, dateString);
+        contentValues.put(COLUMN_ID_USER, idUser);
+        long result = db.insert(TABLE_BILL, null, contentValues);
+        if (result == -1) {
+            return false;
+        } else {
+            return true;
+        }
+    }
+
+    public boolean insertDetailBill(int idBill, int idFood, int count){
+        SQLiteDatabase db = this.getWritableDatabase();
+        ContentValues contentValues = new ContentValues();
+        contentValues.put(COLUMN_BILL_ID, idBill);
+        contentValues.put(COLUMN_FOOD_ID, idFood);
+        contentValues.put(COLUMN_COUNT, count);
+        long result = db.insert(TABLE_BILL, null, contentValues);
+        if (result == -1) {
+            return false;
+        } else {
+            return true;
+        }
+    }
+
+    public int getLastInsertId(){
+        int lastInsertedId = -1;
+        SQLiteDatabase db = this.getWritableDatabase();
+        String query = "SELECT last_insert_rowid() FROM " + TABLE_BILL;
+        Cursor cursor = db.rawQuery(query, null);
+        if (cursor.moveToFirst()) {
+            lastInsertedId = cursor.getInt(0);
+        }
+        cursor.close();
+        return lastInsertedId;
     }
 
     public boolean insertUser(String name, String address, String email, String phone, String password) {

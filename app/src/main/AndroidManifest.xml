@@ -31,6 +31,8 @@
             android:exported="true" />
         <activity
             android:name=".activity.PredictionItemActivity"
+            android:exported="false" />
+        <activity
             android:name=".activity.RecoverPasswordActivity"
             android:exported="false" />
         <activity

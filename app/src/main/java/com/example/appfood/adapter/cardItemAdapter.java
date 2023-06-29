@@ -2,6 +2,8 @@ package com.example.appfood.adapter;
 
 import android.annotation.SuppressLint;
 import android.content.Context;
+import android.text.Editable;
+import android.text.TextWatcher;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -14,6 +16,7 @@ import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.appfood.R;
+import com.example.appfood.interfaces.TextViewChangeListener;
 import com.example.appfood.model.Cart;
 import com.example.appfood.model.Food;
 
@@ -29,10 +32,16 @@ public class cardItemAdapter extends RecyclerView.Adapter<cardItemAdapter.ViewHo
 
     private Cart cart;
 
+    private TextViewChangeListener listener;
+
     public cardItemAdapter(Context context, List<Food> arrayList, Cart cart) {
         this.context = context;
         this.arrayList = arrayList;
         this.cart = cart;
+    }
+
+    public void setTextViewChangeListener(TextViewChangeListener listener) {
+        this.listener = listener;
     }
 
     @NonNull
@@ -77,6 +86,25 @@ public class cardItemAdapter extends RecyclerView.Adapter<cardItemAdapter.ViewHo
                 int amount = Integer.parseInt(holder.txtCount.getText().toString());
                 cart.fixItem(food.getId(),amount+1);
                 holder.txtCount.setText(String.valueOf(amount+1));
+            }
+        });
+        holder.txtCount.addTextChangedListener(new TextWatcher() {
+            @Override
+            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+
+            }
+
+            @Override
+            public void onTextChanged(CharSequence s, int start, int before, int count) {
+                int position = holder.getAdapterPosition();
+                if (listener != null && position != RecyclerView.NO_POSITION) {
+                    listener.onTextViewChanged(position, s.toString());
+                }
+            }
+
+            @Override
+            public void afterTextChanged(Editable s) {
+
             }
         });
     }
