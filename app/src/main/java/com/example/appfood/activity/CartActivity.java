@@ -18,6 +18,7 @@ import android.os.Bundle;
 import android.os.VibrationEffect;
 import android.os.Vibrator;
 import android.provider.Settings;
+import android.view.MotionEvent;
 import android.view.View;
 import android.widget.Button;
 import android.widget.ImageButton;
@@ -107,27 +108,13 @@ public class CartActivity extends AppCompatActivity implements TextViewChangeLis
             @Override
             public void onSlideComplete(@NonNull SlideToActView slideToActView) {
                 if(sessionUser.getUserId() == null){
-                    AlertDialog.Builder builder = new AlertDialog.Builder(CartActivity.this);
-                    builder.setTitle("Chưa đăng nhập");
-                    builder.setMessage("Bạn có muốn đăng nhập để ua hàng không?");
-                    builder.setPositiveButton("Có", new DialogInterface.OnClickListener() {
-                        @Override
-                        public void onClick(DialogInterface dialog, int which) {
-                            Intent intent = new Intent(CartActivity.this,LoginActivity.class);
-                            startActivity(intent);
-                        }
-                    });
-                    builder.setNegativeButton("Không", new DialogInterface.OnClickListener() {
-                        @Override
-                        public void onClick(DialogInterface dialog, int which) {
-                        }
-                    });
-                    builder.show();
+
                     return;
                 }
                 AlertDialog.Builder builder = new AlertDialog.Builder(CartActivity.this);
                 builder.setTitle("Xác nhận đặt hàng");
                 builder.setMessage("Bạn có chắc chắn đặt hàng không?");
+                builder.setIcon(R.drawable.app_logo);
                 builder.setPositiveButton("Xác nhận", new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialog, int which) {
@@ -137,18 +124,29 @@ public class CartActivity extends AppCompatActivity implements TextViewChangeLis
                             int idFood = arrayFood.get(i).getId();
                             foodDB.insertDetailBill(idBill,idFood,itemCarts.get(idFood));
                         }
-                        Toast.makeText(CartActivity.this,"Đặt hàng thành công",Toast.LENGTH_SHORT);
+                        sessionCart.clear();
                         vibrate(CartActivity.this);
                         Intent intent = new Intent(CartActivity.this,MainActivity.class);
                         startActivity(intent);
+                        Toast.makeText(CartActivity.this,"Đặt hàng thành công",Toast.LENGTH_SHORT);
                     }
                 });
                 builder.setNegativeButton("Thôi no rồi!", new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialog, int which) {
+                        Intent intent = new Intent(CartActivity.this,MainActivity.class);
+                        startActivity(intent);
                     }
                 });
                 builder.show();
+            }
+        });
+
+        btnCheckOut.setOnLongClickListener(new View.OnLongClickListener() {
+            @Override
+            public boolean onLongClick(View v) {
+                Toast.makeText(CartActivity.this, "Event", Toast.LENGTH_SHORT).show();
+                return false;
             }
         });
     }
@@ -199,4 +197,5 @@ public class CartActivity extends AppCompatActivity implements TextViewChangeLis
             }
         }
     }
+
 }

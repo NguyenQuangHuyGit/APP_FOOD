@@ -1,7 +1,10 @@
 package com.example.appfood.adapter;
 
 import android.annotation.SuppressLint;
+import android.app.AlertDialog;
 import android.content.Context;
+import android.content.DialogInterface;
+import android.content.Intent;
 import android.text.Editable;
 import android.text.TextWatcher;
 import android.view.LayoutInflater;
@@ -11,11 +14,14 @@ import android.widget.Button;
 import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.appfood.R;
+import com.example.appfood.activity.CartActivity;
+import com.example.appfood.activity.MainActivity;
 import com.example.appfood.interfaces.TextViewChangeListener;
 import com.example.appfood.model.Cart;
 import com.example.appfood.model.Food;
@@ -55,7 +61,6 @@ public class cardItemAdapter extends RecyclerView.Adapter<cardItemAdapter.ViewHo
     @SuppressLint("SetTextI18n")
     @Override
     public void onBindViewHolder(@NonNull cardItemAdapter.ViewHolder holder, int position) {
-        Context context = holder.itemView.getContext();
         Food food = arrayList.get(position);
         holder.txtName.setText(food.getName());
         DecimalFormat decimalFormat = new DecimalFormat("###,###,###");
@@ -73,6 +78,8 @@ public class cardItemAdapter extends RecyclerView.Adapter<cardItemAdapter.ViewHo
                     arrayList.remove(id);
                     cart.removeFromCart(food.getId());
                     notifyDataSetChanged();
+                    if(arrayList.size()==0)
+                        emptyCart();
                 }else{
                     cart.fixItem(food.getId(),amount-1);
                     holder.txtCount.setText(String.valueOf(amount-1));
@@ -112,6 +119,21 @@ public class cardItemAdapter extends RecyclerView.Adapter<cardItemAdapter.ViewHo
     @Override
     public int getItemCount() {
         return arrayList.size();
+    }
+
+    private void emptyCart(){
+        AlertDialog.Builder builder = new AlertDialog.Builder(context);
+        builder.setTitle("Giỏ hàng trống rồi!");
+        builder.setMessage("Hãy chọn đồ ăn khác rồi quay lại nhé bạn yêu ơi !!!!!");
+        builder.setIcon(R.drawable.app_logo);
+        builder.setPositiveButton("Đi thôi", new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+                Intent intent = new Intent(context,MainActivity.class);
+                context.startActivity(intent);
+            }
+        });
+        builder.show();
     }
 
     public static class ViewHolder extends RecyclerView.ViewHolder{
