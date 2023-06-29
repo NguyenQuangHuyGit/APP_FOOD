@@ -1,6 +1,5 @@
 package com.example.appfood.activity;
 
-import android.annotation.SuppressLint;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.Menu;
@@ -10,13 +9,11 @@ import android.view.animation.Animation;
 import android.view.animation.AnimationUtils;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
-import android.widget.Toast;
 import android.widget.ViewFlipper;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
-import androidx.constraintlayout.helper.widget.Carousel;
 import androidx.core.view.GravityCompat;
 import androidx.drawerlayout.widget.DrawerLayout;
 import androidx.recyclerview.widget.GridLayoutManager;
@@ -28,12 +25,12 @@ import com.example.appfood.Session.SessionUser;
 import com.example.appfood.adapter.foodItemAdapter;
 import com.example.appfood.database.FoodDBHelper;
 import com.example.appfood.model.Food;
+import com.example.appfood.model.SMS;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.google.android.material.navigation.NavigationView;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Objects;
 
 public class MainActivity extends AppCompatActivity {
 
@@ -182,11 +179,15 @@ public class MainActivity extends AppCompatActivity {
                 }
                 if(itemId == R.id.btnLogout){
                     sessionUser.clear();
+                    sessionCart.clear();
                     recreate();
                     return true;
                 }
                 if(itemId == R.id.btnShutdown){
                     finishAffinity();
+                    return true;
+                }
+                if(itemId == R.id.btnHistory){
                     return true;
                 }
                 return false;

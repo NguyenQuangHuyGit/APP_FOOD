@@ -15,6 +15,11 @@
             android:title="Thông tin tài khoản"
             android:visible="false"/>
         <item
+            android:id="@+id/btnHistory"
+            android:icon="@drawable/account_ic"
+            android:title="Lịch sử đặt hàng"
+            android:visible="true"/>
+        <item
             android:title="Đăng xuất"
             android:id="@+id/btnLogout"
             android:icon="@drawable/logout_ic"

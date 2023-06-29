@@ -213,7 +213,7 @@ public class FoodDBHelper extends SQLiteOpenHelper{
         contentValues.put(COLUMN_BILL_ID, idBill);
         contentValues.put(COLUMN_FOOD_ID, idFood);
         contentValues.put(COLUMN_COUNT, count);
-        long result = db.insert(TABLE_BILL, null, contentValues);
+        long result = db.insert(TABLE_BILL_FOOD, null, contentValues);
         if (result == -1) {
             return false;
         } else {
