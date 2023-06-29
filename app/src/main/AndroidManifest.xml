@@ -11,9 +11,6 @@
     <uses-permission android:name="android.permission.SEND_SMS" />
     <uses-permission android:name="android.permission.RECEIVE_SMS" />
     <uses-permission android:name="android.permission.VIBRATE" />
-    <uses-permission android:name="android.permission.INTERNET" />
-
-
     <application
         android:allowBackup="true"
         android:dataExtractionRules="@xml/data_extraction_rules"
@@ -25,6 +22,7 @@
         android:theme="@style/Theme.AppFood"
         android:usesCleartextTraffic="true"
         tools:targetApi="31">
+
         <meta-data
             android:name="com.google.android.geo.API_KEY"
             android:value="AIzaSyAVFdwAOWDulEolfduVUKOYybP9rW6g-gU" />
@@ -32,6 +30,7 @@
             android:name="com.google.android.gms.version"
             android:exported="true" />
         <activity
+            android:name=".activity.PredictionItemActivity"
             android:name=".activity.RecoverPasswordActivity"
             android:exported="false" />
         <activity
@@ -55,7 +54,8 @@
         <activity
             android:name=".activity.foodItemActivity"
             android:exported="false" />
-        <activity android:name=".activity.MapActivity"
+        <activity
+            android:name=".activity.MapActivity"
             android:exported="false" />
         <activity
             android:name=".activity.MainActivity"

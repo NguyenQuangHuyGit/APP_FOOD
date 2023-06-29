@@ -9,10 +9,13 @@ import android.text.Editable;
 import android.text.TextWatcher;
 import android.util.Log;
 import android.view.View;
+import android.widget.AdapterView;
 import android.widget.EditText;
 import android.widget.ImageButton;
+import android.widget.ListView;
 
 import com.example.appfood.R;
+import com.example.appfood.adapter.PredictionAdapter;
 import com.google.android.gms.common.api.Status;
 import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
@@ -34,6 +37,7 @@ import com.google.android.libraries.places.widget.AutocompleteSupportFragment;
 import com.google.android.libraries.places.widget.model.AutocompleteActivityMode;
 import com.google.android.libraries.places.widget.listener.PlaceSelectionListener;
 
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
@@ -43,12 +47,15 @@ public class MapActivity extends AppCompatActivity implements OnMapReadyCallback
     PlacesClient placesClient;
     ImageButton btnBack;
     EditText txtSearch;
+    ListView listHint;
+    PredictionAdapter predictionAdapter;
+    ArrayList<String> arrayHint;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_map);
         setVariable();
-        setSearch();
+        setListHint();
         setEvent();
     }
 
@@ -59,6 +66,9 @@ public class MapActivity extends AppCompatActivity implements OnMapReadyCallback
         supportMapFragment.getMapAsync(this);
         btnBack = (ImageButton) findViewById(R.id.btnBack);
         txtSearch = (EditText) findViewById(R.id.txtSearch);
+        listHint = (ListView) findViewById(R.id.listHint);
+        arrayHint = new ArrayList<>();
+        predictionAdapter = new PredictionAdapter(this,R.layout.activity_prediction_item,arrayHint);
     }
 
     @Override
@@ -70,8 +80,17 @@ public class MapActivity extends AppCompatActivity implements OnMapReadyCallback
         mMap.addMarker(new MarkerOptions().position(initialPosition).title("Hà Nội"));
     }
 
-    private void setSearch(){
-
+    private void setListHint(){
+        listHint.setAdapter(predictionAdapter);
+        listHint.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            @Override
+            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+                String selectedPrediction = arrayHint.get(position);
+                txtSearch.setText(selectedPrediction);
+                arrayHint.clear();
+                predictionAdapter.notifyDataSetChanged();
+            }
+        });
     }
 
     private void setEvent(){
@@ -123,8 +142,11 @@ public class MapActivity extends AppCompatActivity implements OnMapReadyCallback
                 if (task.isSuccessful()) {
                     FindAutocompletePredictionsResponse response = task.getResult();
                     List<AutocompletePrediction> predictions = response.getAutocompletePredictions();
-                    // Process the predictions and display them to the user
-                    // For example, you can show them in a ListView or RecyclerView
+                    arrayHint.clear();
+                    for (AutocompletePrediction prediction : predictions) {
+                        arrayHint.add(prediction.getFullText(null).toString());
+                    }
+                    predictionAdapter.notifyDataSetChanged();
                 } else {
                     // Handle the error
                     Exception exception = task.getException();

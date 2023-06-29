@@ -63,6 +63,11 @@
             android:textColor="@color/black"
             android:hint="Tim kiếm địa chỉ của bạn" />
 
+        <ListView
+            android:id="@+id/listHint"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content" />
+
     </LinearLayout>
 
     <fragment
