@@ -16,12 +16,23 @@ import com.example.appfood.R;
 import com.example.appfood.database.FoodDBHelper;
 import com.example.appfood.databinding.ActivitySignupBinding;
 
+import java.util.Properties;
 import java.util.regex.Pattern;
+
+import javax.mail.Authenticator;
+import javax.mail.Message;
+import javax.mail.MessagingException;
+import javax.mail.PasswordAuthentication;
+import javax.mail.Session;
+import javax.mail.Transport;
+import javax.mail.internet.AddressException;
+import javax.mail.internet.InternetAddress;
+import javax.mail.internet.MimeMessage;
 
 
 public class SignupActivity extends AppCompatActivity {
-    FoodDBHelper db;
-    ActivitySignupBinding binding;
+    private FoodDBHelper db;
+    private ActivitySignupBinding binding;
     private EditText etName, etAddress, etEmail, etPhone, etPassword, etConfirmPassword;
 
     @Override
@@ -51,26 +62,31 @@ public class SignupActivity extends AppCompatActivity {
                     String confirmPassword = binding.signupConfirm.getText().toString().trim();
 
                     if(name.equals("")||address.equals("")||email.equals("")||phone.equals("")||password.equals("")||confirmPassword.equals(""))
-                        Toast.makeText(SignupActivity.this, "Dữ liệu không được để trống. Vui lòng kiểm tra lại!", Toast.LENGTH_SHORT).show();
+                        Toast.makeText(SignupActivity.this, "Dữ liệu không được để trống. Vui lòng kiểm tra lại !", Toast.LENGTH_SHORT).show();
                     else{
                         if(password.equals(confirmPassword)){
                             Boolean checkPhone = db.checkPhone(phone);
-                            if(checkPhone == false){
-                                Boolean insert = db.insertUser(name,address,email,phone,password);
-                                if(insert==true){
-                                    Toast.makeText(SignupActivity.this, "Đăng ký thành công!", Toast.LENGTH_SHORT).show();
-                                    Intent intent = new Intent(getApplicationContext(),LoginActivity.class);
-                                    startActivity(intent);
-                                    sendRegistrationSuccessSMS(phone);
-                                }else{
-                                    Toast.makeText(SignupActivity.this, "Đăng kí không thành công!", Toast.LENGTH_SHORT).show();
+                            Boolean checkEmail = db.checkEmail(email);
+                            if(checkEmail == false){
+                                if(checkPhone == false){
+                                    Boolean insert = db.insertUser(name,address,email,phone,password);
+                                    if(insert==true){
+                                        Toast.makeText(SignupActivity.this, "Đăng ký thành công !", Toast.LENGTH_SHORT).show();
+                                        Intent intent = new Intent(getApplicationContext(),LoginActivity.class);
+                                        startActivity(intent);
+                                        sendRegistrationSuccessEmail(email);
+                                    }else{
+                                        Toast.makeText(SignupActivity.this, "Đăng kí không thành công !", Toast.LENGTH_SHORT).show();
+                                    }
                                 }
-                            }
-                            else{
-                                Toast.makeText(SignupActivity.this, "Người dùng đã tồn tại. Đăng nhập ngay!", Toast.LENGTH_SHORT).show();
+                                else{
+                                    Toast.makeText(SignupActivity.this, "Số điện thoại đã được đăng ký. Vui lòng kiểm tra lại !", Toast.LENGTH_SHORT).show();
+                                }
+                            }else {
+                                Toast.makeText(SignupActivity.this, "Email đã được đăng ký. Vui lòng kiểm tra lại !", Toast.LENGTH_SHORT).show();
                             }
                         }else{
-                            Toast.makeText(SignupActivity.this, "Mật khẩu nhập lại không đúng. Vui lòng kiểm tra lại!", Toast.LENGTH_SHORT).show();
+                            Toast.makeText(SignupActivity.this, "Mật khẩu nhập lại không đúng. Vui lòng kiểm tra lại !", Toast.LENGTH_SHORT).show();
                         }
                     }
                 }
@@ -102,7 +118,7 @@ public class SignupActivity extends AppCompatActivity {
             smsManager.sendTextMessage(PhoneNumber, null, message, null, null);
             Toast.makeText(this, "Tin nhắn đã được gửi thành công.", Toast.LENGTH_SHORT).show();
         } catch (Exception e) {
-            Toast.makeText(this, "Gửi tin nhắn thất bại. Vui lòng thử lại sau.", Toast.LENGTH_SHORT).show();
+            Toast.makeText(this, "Gửi tin nhắn thất bại. Vui lòng thử lại sau !", Toast.LENGTH_SHORT).show();
             e.printStackTrace();
         }
     }
@@ -116,51 +132,95 @@ public class SignupActivity extends AppCompatActivity {
         String confirmPassword = etConfirmPassword.getText().toString().trim();
 
         if (name.isEmpty()) {
-            etName.setError("Vui lòng nhập tên");
+            etName.setError("Vui lòng nhập tên !");
             return false;
         }
 
         if (address.isEmpty()) {
-            etAddress.setError("Vui lòng nhập địa chỉ");
+            etAddress.setError("Vui lòng nhập địa chỉ !");
             return false;
         }
 
         if (email.isEmpty()) {
-            etEmail.setError("Vui lòng nhập email");
+            etEmail.setError("Vui lòng nhập email !");
             return false;
         } else if (!Patterns.EMAIL_ADDRESS.matcher(email).matches()) {
-            etEmail.setError("Vui lòng nhập email hợp lệ");
+            etEmail.setError("Vui lòng nhập email hợp lệ !");
             return false;
         }
 
         if (phone.isEmpty()) {
-            etPhone.setError("Vui lòng nhập số điện thoại");
+            etPhone.setError("Vui lòng nhập số điện thoại !");
             return false;
         } else if (!Pattern.matches("[0-9]+", phone)) {
-            etPhone.setError("Vui lòng nhập số điện thoại hợp lệ");
+            etPhone.setError("Vui lòng nhập số điện thoại hợp lệ !");
             return false;
         }else if (phone.length() < 10) {
-            etPhone.setError("Số điện thoại không đúng định dạng");
+            etPhone.setError("Số điện thoại không đúng định dạng !");
             return false;
         }
 
         if (password.isEmpty()) {
-            etPassword.setError("Vui lòng nhập mật khẩu");
+            etPassword.setError("Vui lòng nhập mật khẩu !");
             return false;
         } else if (password.length() < 6) {
-            etPassword.setError("Mật khẩu phải có ít nhất 6 ký tự");
+            etPassword.setError("Mật khẩu phải có ít nhất 6 ký tự !");
             return false;
         }
 
         if (confirmPassword.isEmpty()) {
-            etConfirmPassword.setError("Vui lòng nhập lại mật khẩu");
+            etConfirmPassword.setError("Vui lòng nhập lại mật khẩu !");
             return false;
         } else if (!confirmPassword.equals(password)) {
-            etConfirmPassword.setError("Mật khẩu không khớp");
+            etConfirmPassword.setError("Mật khẩu nhập lại không khớp !");
             return false;
         }
-
         return true;
+    }
+
+    private void sendRegistrationSuccessEmail(String email){
+        try {
+            String stringSenderEmail = "hungb.z98@gmail.com";
+            String stringReceiverEmail = email;
+            String stringPasswordSenderEmail = "xtnmyflmidrgxiif";
+            String stringHost = "smtp.gmail.com";
+
+            Properties properties = System.getProperties();
+            properties.put("mail.smtp.host", stringHost);
+            properties.put("mail.smtp.port", "465");
+            properties.put("mail.smtp.ssl.enable", "true");
+            properties.put("mail.smtp.auth", "true");
+
+            javax.mail.Session session = Session.getInstance(properties, new Authenticator() {
+                @Override
+                protected PasswordAuthentication getPasswordAuthentication() {
+                    return new PasswordAuthentication(stringSenderEmail, stringPasswordSenderEmail);
+                }
+            });
+
+            MimeMessage mimeMessage = new MimeMessage(session);
+            mimeMessage.addRecipient(Message.RecipientType.TO, new InternetAddress(stringReceiverEmail));
+
+            mimeMessage.setSubject("[Food HVH] Đăng ký tài khoản thành công!");
+            mimeMessage.setText("Xin chào quý khách, \n\nChúc mừng quý khách đã đăng ký thành công tài khoản app food HVH. \nChúc quý khách có những bữa ăn ngon miệng!\n\nTrân trọng.");
+
+            Thread thread = new Thread(new Runnable() {
+                @Override
+                public void run() {
+                    try {
+                        Transport.send(mimeMessage);
+                    } catch (MessagingException e) {
+                        e.printStackTrace();
+                    }
+                }
+            });
+            thread.start();
+
+        } catch (AddressException e) {
+            e.printStackTrace();
+        } catch (MessagingException e) {
+            e.printStackTrace();
+        }
     }
 }
 
