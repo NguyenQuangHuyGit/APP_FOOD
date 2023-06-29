@@ -69,15 +69,15 @@ public class SignupActivity extends AppCompatActivity {
                             Boolean checkEmail = db.checkEmail(email);
                             if(checkEmail == false){
                                 if(checkPhone == false){
-                                    Boolean insert = db.insertUser(name,address,email,phone,password);
-                                    if(insert==true){
-                                        Toast.makeText(SignupActivity.this, "Đăng ký thành công !", Toast.LENGTH_SHORT).show();
-                                        Intent intent = new Intent(getApplicationContext(),LoginActivity.class);
-                                        startActivity(intent);
-                                        sendRegistrationSuccessEmail(email);
-                                    }else{
-                                        Toast.makeText(SignupActivity.this, "Đăng kí không thành công !", Toast.LENGTH_SHORT).show();
-                                    }
+                                    Intent intent = new Intent(SignupActivity.this,VerificationActivity.class);
+                                    Bundle bundle = new Bundle();
+                                    bundle.putString("name",name);
+                                    bundle.putString("address",address);
+                                    bundle.putString("email",email);
+                                    bundle.putString("phone",phone);
+                                    bundle.putString("password",password);
+                                    intent.putExtras(bundle);
+                                    startActivity(intent);
                                 }
                                 else{
                                     Toast.makeText(SignupActivity.this, "Số điện thoại đã được đăng ký. Vui lòng kiểm tra lại !", Toast.LENGTH_SHORT).show();
@@ -110,18 +110,6 @@ public class SignupActivity extends AppCompatActivity {
         });
     }
 
-    private void sendRegistrationSuccessSMS(String phone) {
-        String message = "Chúc mừng! Bạn đã đăng ký thành công tài khoản trên app pizza HVH của chúng tôi.";
-        String PhoneNumber = "+84" + phone.substring(1);
-        try {
-            SmsManager smsManager = SmsManager.getDefault();
-            smsManager.sendTextMessage(PhoneNumber, null, message, null, null);
-            Toast.makeText(this, "Tin nhắn đã được gửi thành công.", Toast.LENGTH_SHORT).show();
-        } catch (Exception e) {
-            Toast.makeText(this, "Gửi tin nhắn thất bại. Vui lòng thử lại sau !", Toast.LENGTH_SHORT).show();
-            e.printStackTrace();
-        }
-    }
 
     private boolean validateData() {
         String name = etName.getText().toString().trim();
@@ -176,51 +164,6 @@ public class SignupActivity extends AppCompatActivity {
             return false;
         }
         return true;
-    }
-
-    private void sendRegistrationSuccessEmail(String email){
-        try {
-            String stringSenderEmail = "hungb.z98@gmail.com";
-            String stringReceiverEmail = email;
-            String stringPasswordSenderEmail = "xtnmyflmidrgxiif";
-            String stringHost = "smtp.gmail.com";
-
-            Properties properties = System.getProperties();
-            properties.put("mail.smtp.host", stringHost);
-            properties.put("mail.smtp.port", "465");
-            properties.put("mail.smtp.ssl.enable", "true");
-            properties.put("mail.smtp.auth", "true");
-
-            javax.mail.Session session = Session.getInstance(properties, new Authenticator() {
-                @Override
-                protected PasswordAuthentication getPasswordAuthentication() {
-                    return new PasswordAuthentication(stringSenderEmail, stringPasswordSenderEmail);
-                }
-            });
-
-            MimeMessage mimeMessage = new MimeMessage(session);
-            mimeMessage.addRecipient(Message.RecipientType.TO, new InternetAddress(stringReceiverEmail));
-
-            mimeMessage.setSubject("[Food HVH] Đăng ký tài khoản thành công!");
-            mimeMessage.setText("Xin chào quý khách, \n\nChúc mừng quý khách đã đăng ký thành công tài khoản app food HVH. \nChúc quý khách có những bữa ăn ngon miệng!\n\nTrân trọng.");
-
-            Thread thread = new Thread(new Runnable() {
-                @Override
-                public void run() {
-                    try {
-                        Transport.send(mimeMessage);
-                    } catch (MessagingException e) {
-                        e.printStackTrace();
-                    }
-                }
-            });
-            thread.start();
-
-        } catch (AddressException e) {
-            e.printStackTrace();
-        } catch (MessagingException e) {
-            e.printStackTrace();
-        }
     }
 }
 
