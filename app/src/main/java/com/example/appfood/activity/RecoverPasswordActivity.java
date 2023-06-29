@@ -54,6 +54,8 @@ public class RecoverPasswordActivity extends AppCompatActivity {
                         User user = db.getUserByEmail(email);
                         String password = user.getPassword();
                         sendForgotPassword(email,password);
+                        Intent intent = new Intent(RecoverPasswordActivity.this, LoginActivity.class);
+                        startActivity(intent);
                         Toast.makeText(RecoverPasswordActivity.this, "Yêu cầu gửi lại mật khẩu thành công !", Toast.LENGTH_SHORT).show();
                     }else {
                         Toast.makeText(RecoverPasswordActivity.this, "Email chưa được đăng ký. Vui lòng kiểm tra lại !", Toast.LENGTH_SHORT).show();

@@ -31,7 +31,7 @@ public class LoginActivity extends AppCompatActivity {
                 String password = binding.loginPassword.getText().toString();
 
                 if(user.equals("")||password.equals(""))
-                    Toast.makeText(LoginActivity.this, "Bắt buộc phải nhập dữ liệu!", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(LoginActivity.this, "Nhập thông tin tài khoản để đăng nhập!", Toast.LENGTH_SHORT).show();
                 else{
                     int checkPhone = db.checkPhonePassword(user, password);
                     int checkEmail = db.checkEmailPassword(user, password);
@@ -44,7 +44,7 @@ public class LoginActivity extends AppCompatActivity {
                         Intent intent  = new Intent(getApplicationContext(), MainActivity.class);
                         startActivity(intent);
                     }else{
-                        Toast.makeText(LoginActivity.this, "Thông tin không đúng. Vui lòng kiểm tra lại!", Toast.LENGTH_SHORT).show();
+                        Toast.makeText(LoginActivity.this, "Thông tin tài khoản chưa được đăng ký. Vui lòng kiểm tra lại!", Toast.LENGTH_SHORT).show();
                     }
                 }
             }

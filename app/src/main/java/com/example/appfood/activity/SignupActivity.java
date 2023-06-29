@@ -118,7 +118,7 @@ public class SignupActivity extends AppCompatActivity {
             smsManager.sendTextMessage(PhoneNumber, null, message, null, null);
             Toast.makeText(this, "Tin nhắn đã được gửi thành công.", Toast.LENGTH_SHORT).show();
         } catch (Exception e) {
-            Toast.makeText(this, "Gửi tin nhắn thất bại. Vui lòng thử lại sau.", Toast.LENGTH_SHORT).show();
+            Toast.makeText(this, "Gửi tin nhắn thất bại. Vui lòng thử lại sau !", Toast.LENGTH_SHORT).show();
             e.printStackTrace();
         }
     }
@@ -132,47 +132,47 @@ public class SignupActivity extends AppCompatActivity {
         String confirmPassword = etConfirmPassword.getText().toString().trim();
 
         if (name.isEmpty()) {
-            etName.setError("Vui lòng nhập tên");
+            etName.setError("Vui lòng nhập tên !");
             return false;
         }
 
         if (address.isEmpty()) {
-            etAddress.setError("Vui lòng nhập địa chỉ");
+            etAddress.setError("Vui lòng nhập địa chỉ !");
             return false;
         }
 
         if (email.isEmpty()) {
-            etEmail.setError("Vui lòng nhập email");
+            etEmail.setError("Vui lòng nhập email !");
             return false;
         } else if (!Patterns.EMAIL_ADDRESS.matcher(email).matches()) {
-            etEmail.setError("Vui lòng nhập email hợp lệ");
+            etEmail.setError("Vui lòng nhập email hợp lệ !");
             return false;
         }
 
         if (phone.isEmpty()) {
-            etPhone.setError("Vui lòng nhập số điện thoại");
+            etPhone.setError("Vui lòng nhập số điện thoại !");
             return false;
         } else if (!Pattern.matches("[0-9]+", phone)) {
-            etPhone.setError("Vui lòng nhập số điện thoại hợp lệ");
+            etPhone.setError("Vui lòng nhập số điện thoại hợp lệ !");
             return false;
         }else if (phone.length() < 10) {
-            etPhone.setError("Số điện thoại không đúng định dạng");
+            etPhone.setError("Số điện thoại không đúng định dạng !");
             return false;
         }
 
         if (password.isEmpty()) {
-            etPassword.setError("Vui lòng nhập mật khẩu");
+            etPassword.setError("Vui lòng nhập mật khẩu !");
             return false;
         } else if (password.length() < 6) {
-            etPassword.setError("Mật khẩu phải có ít nhất 6 ký tự");
+            etPassword.setError("Mật khẩu phải có ít nhất 6 ký tự !");
             return false;
         }
 
         if (confirmPassword.isEmpty()) {
-            etConfirmPassword.setError("Vui lòng nhập lại mật khẩu");
+            etConfirmPassword.setError("Vui lòng nhập lại mật khẩu !");
             return false;
         } else if (!confirmPassword.equals(password)) {
-            etConfirmPassword.setError("Mật khẩu không khớp");
+            etConfirmPassword.setError("Mật khẩu nhập lại không khớp !");
             return false;
         }
         return true;

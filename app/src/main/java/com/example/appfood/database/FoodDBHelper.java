@@ -31,6 +31,7 @@ public class FoodDBHelper extends SQLiteOpenHelper{
     private static final String COLUMN_FOOD_ID = "food_id";
     private static final String COLUMN_BILL_ID = "bill_id";
     private static final String COLUMN_COUNT = "count";
+    private static final String COLUMN_ID_USER = "user_id";
 
     private static final String TABLE_USER = "users";
     private static final String COLUMN_USER_ID = "id";
@@ -59,7 +60,9 @@ public class FoodDBHelper extends SQLiteOpenHelper{
         String createBillTableQuery = "CREATE TABLE IF NOT EXISTS " + TABLE_BILL + " (" +
                 COLUMN_ID + " INTEGER PRIMARY KEY AUTOINCREMENT, " +
                 COLUMN_TOTAL + " TEXT," +
-                COLUMN_DATE + " DATE)";
+                COLUMN_DATE + " DATE," +
+                COLUMN_ID_USER + " DATE," +
+                "FOREIGN KEY(" + COLUMN_ID_USER + ") REFERENCES " + TABLE_USER + "(" + COLUMN_USER_ID + "))";
         db.execSQL(createBillTableQuery);
 
         // Create the many-to-many relationship table
@@ -202,6 +205,20 @@ public class FoodDBHelper extends SQLiteOpenHelper{
         }
     }
 
+    public boolean updateUser(int id, String name, String address, String email, String phone) {
+        SQLiteDatabase db = this.getWritableDatabase();
+        ContentValues contentValues = new ContentValues();
+        contentValues.put(COLUMN_USER_NAME, name);
+        contentValues.put(COLUMN_USER_ADDRESS, address);
+        contentValues.put(COLUMN_USER_EMAIL, email);
+        contentValues.put(COLUMN_USER_PHONE, phone);
+        long result = db.update(TABLE_USER, contentValues, COLUMN_USER_ID + " = ?", new String[]{String.valueOf(id)});
+        if (result == -1) {
+            return false;
+        } else {
+            return true;
+        }
+    }
 
     public Boolean checkPhone(String phone){
         SQLiteDatabase MyDatabase = this.getWritableDatabase();

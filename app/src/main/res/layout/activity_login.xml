@@ -22,8 +22,8 @@
 
         <EditText
             android:id="@+id/login_phone_email"
-            android:layout_width="350dp"
-            android:layout_height="60dp"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
             android:layout_marginTop="30dp"
             android:background="@drawable/lavender_border"
             android:drawableLeft="@drawable/phone_ic"
@@ -32,12 +32,12 @@
             android:textColorHint="@color/black"
             android:inputType="text"
             android:hint="Số điện thoại/ Email"
-            android:padding="8dp" />
+            android:padding="15dp" />
 
         <EditText
             android:id="@+id/login_password"
-            android:layout_width="350dp"
-            android:layout_height="60dp"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
             android:layout_marginTop="20dp"
             android:background="@drawable/lavender_border"
             android:drawableLeft="@drawable/lock"
@@ -46,34 +46,36 @@
             android:textColor="@color/black"
             android:hint="Mật khẩu"
             android:inputType="textPassword"
-            android:padding="8dp" />
+            android:padding="15dp" />
 
         <Button
             android:id="@+id/login_button"
-            android:layout_width="350dp"
-            android:layout_height="70dp"
-            android:layout_marginTop="30dp"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="35dp"
             android:backgroundTint="@color/black"
+            android:background="@drawable/lavender_border"
             android:text="Đăng nhập"
             android:textColor="#ffffff"
-            android:textSize="18sp"
-            app:cornerRadius="30dp" />
+            android:textSize="16sp" />
+
         <Button
             android:id="@+id/back_button"
-            android:layout_width="350dp"
-            android:layout_height="70dp"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
             android:backgroundTint="@color/black"
-            android:text="Quay lại"
-            android:textSize="18sp"
+            android:background="@drawable/lavender_border"
+            android:text="Quay lại màn hình chính"
+            android:textSize="16dp"
             android:textColor="#ffffff"
-            app:cornerRadius="30dp" />
+            android:layout_marginTop="15dp"/>
 
         <TextView
             android:id="@+id/signupRedirectText"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_gravity="center"
-            android:layout_marginTop="14dp"
+            android:layout_marginTop="18dp"
             android:padding="8dp"
             android:textStyle="bold"
             android:text="Bạn chưa có tài khoản? Đăng ký"
@@ -85,8 +87,8 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_gravity="center"
-            android:layout_marginTop="10dp"
-            android:padding="8dp"
+            android:layout_marginTop="8dp"
+            android:padding="6dp"
             android:textStyle="bold"
             android:text="Quên mật khẩu?"
             android:textColor="@color/black"
