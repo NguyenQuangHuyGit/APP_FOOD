@@ -26,6 +26,8 @@ public class SessionCart {
         editor.apply();
     }
     public void clear(){
+        Cart.itemIds.clear();
+        Cart.items.clear();
         editor.clear();
         editor.apply();
     }

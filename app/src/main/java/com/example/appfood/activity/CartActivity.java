@@ -128,7 +128,7 @@ public class CartActivity extends AppCompatActivity implements TextViewChangeLis
                         vibrate(CartActivity.this);
                         Intent intent = new Intent(CartActivity.this,MainActivity.class);
                         startActivity(intent);
-                        Toast.makeText(CartActivity.this,"Đặt hàng thành công",Toast.LENGTH_SHORT);
+                        Toast.makeText(CartActivity.this,"Đặt hàng thành công",Toast.LENGTH_SHORT).show();
                     }
                 });
                 builder.setNegativeButton("Thôi no rồi!", new DialogInterface.OnClickListener() {

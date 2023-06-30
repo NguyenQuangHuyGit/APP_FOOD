@@ -8,12 +8,14 @@ import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
 
 import com.example.appfood.R;
+import com.example.appfood.model.Bill;
 import com.example.appfood.model.Food;
 import com.example.appfood.model.User;
 
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
+import java.util.List;
 import java.util.Objects;
 
 public class FoodDBHelper extends SQLiteOpenHelper{
@@ -64,7 +66,7 @@ public class FoodDBHelper extends SQLiteOpenHelper{
                 COLUMN_TOTAL + " TEXT," +
                 COLUMN_TOTAL_COUNT + " INTEGER," +
                 COLUMN_DATE + " TEXT," +
-                COLUMN_ID_USER + " DATE," +
+                COLUMN_ID_USER + " INTEGER," +
                 "FOREIGN KEY(" + COLUMN_ID_USER + ") REFERENCES " + TABLE_USER + "(" + COLUMN_USER_ID + "))";
         db.execSQL(createBillTableQuery);
 
@@ -204,6 +206,26 @@ public class FoodDBHelper extends SQLiteOpenHelper{
         } else {
             return true;
         }
+    }
+
+    @SuppressLint("Range")
+    public ArrayList<Bill> getBillbyUserId(int userId){
+        ArrayList<Bill> arrayList = new ArrayList<>();
+        SQLiteDatabase db = this.getReadableDatabase();
+        String[] column = {COLUMN_ID, COLUMN_TOTAL, COLUMN_TOTAL_COUNT, COLUMN_DATE};
+        String selection = "user_id = ?";
+        String[] selectionArgs = { String.valueOf(userId) };
+        Cursor res =  db.query(TABLE_BILL,column,selection,selectionArgs,null,null,null);
+        while(res.moveToNext()){
+            Bill bill = new Bill();
+            bill.setId(res.getInt(res.getColumnIndex(COLUMN_ID)));
+            bill.setDate(res.getString(res.getColumnIndex(COLUMN_DATE)));
+            bill.setCount(res.getInt(res.getColumnIndex(COLUMN_TOTAL_COUNT)));
+            bill.setTotalBill(res.getString(res.getColumnIndex(COLUMN_TOTAL)));
+            arrayList.add(bill);
+        }
+        res.close();
+        return arrayList;
     }
 
     public boolean insertDetailBill(int idBill, int idFood, int count){

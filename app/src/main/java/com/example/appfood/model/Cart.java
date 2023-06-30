@@ -6,7 +6,7 @@ import java.util.List;
 import java.util.Map;
 
 public class Cart {
-    private static Map<Integer,Integer> items = new HashMap<>();
+    public static Map<Integer,Integer> items = new HashMap<>();
     public static List<Integer> itemIds = new ArrayList<>();
 
     public void updateItem(int id, int amount){

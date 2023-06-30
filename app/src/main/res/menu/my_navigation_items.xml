@@ -18,7 +18,7 @@
             android:id="@+id/btnHistory"
             android:icon="@drawable/account_ic"
             android:title="Lịch sử đặt hàng"
-            android:visible="true"/>
+            android:visible="false"/>
         <item
             android:title="Đăng xuất"
             android:id="@+id/btnLogout"
