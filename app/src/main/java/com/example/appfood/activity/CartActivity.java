@@ -118,7 +118,7 @@ public class CartActivity extends AppCompatActivity implements TextViewChangeLis
                 builder.setPositiveButton("Xác nhận", new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialog, int which) {
-                        foodDB.insertBill(txtTotal.getText().toString(), date, Integer.parseInt(sessionUser.getUserId()));
+                        foodDB.insertBill(txtTotal.getText().toString(), date,Integer.parseInt(txtCount.getText().toString()), Integer.parseInt(sessionUser.getUserId()));
                         int idBill = foodDB.getLastInsertId();
                         for(int i=0;i<arrayFood.size();i++){
                             int idFood = arrayFood.get(i).getId();

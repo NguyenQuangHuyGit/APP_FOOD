@@ -29,6 +29,7 @@ public class FoodDBHelper extends SQLiteOpenHelper{
     private static final String COLUMN_IMAGE = "image";
     private static final String COLUMN_DESCRIPTION = "description";
     private static final String COLUMN_TOTAL = "total";
+    private static final String COLUMN_TOTAL_COUNT = "totalCount";
     private static final String COLUMN_DATE = "date";
     private static final String COLUMN_FOOD_ID = "food_id";
     private static final String COLUMN_BILL_ID = "bill_id";
@@ -58,16 +59,15 @@ public class FoodDBHelper extends SQLiteOpenHelper{
                 COLUMN_IMAGE +  " INTEGER)";
         db.execSQL(createFoodTableQuery);
 
-        // Create the bill table
         String createBillTableQuery = "CREATE TABLE IF NOT EXISTS " + TABLE_BILL + " (" +
                 COLUMN_ID + " INTEGER PRIMARY KEY AUTOINCREMENT, " +
                 COLUMN_TOTAL + " TEXT," +
+                COLUMN_TOTAL_COUNT + " INTEGER," +
                 COLUMN_DATE + " TEXT," +
                 COLUMN_ID_USER + " DATE," +
                 "FOREIGN KEY(" + COLUMN_ID_USER + ") REFERENCES " + TABLE_USER + "(" + COLUMN_USER_ID + "))";
         db.execSQL(createBillTableQuery);
 
-        // Create the many-to-many relationship table
         String createRelationshipTableQuery = "CREATE TABLE IF NOT EXISTS " + TABLE_BILL_FOOD + "(" +
                 COLUMN_FOOD_ID + " INTEGER, " +
                 COLUMN_BILL_ID + " INTEGER, " +
@@ -76,7 +76,6 @@ public class FoodDBHelper extends SQLiteOpenHelper{
                 "FOREIGN KEY(" + COLUMN_BILL_ID + ") REFERENCES " + TABLE_BILL + "(" + COLUMN_ID + "))";
         db.execSQL(createRelationshipTableQuery);
 
-        // Create User
         String createTableUser = "CREATE TABLE IF NOT EXISTS " + TABLE_USER + "(" +
                 COLUMN_USER_ID + " INTEGER PRIMARY KEY AUTOINCREMENT, " +
                 COLUMN_USER_NAME + " TEXT, " +
@@ -95,7 +94,6 @@ public class FoodDBHelper extends SQLiteOpenHelper{
         int count = cursor.getInt(0);
         cursor.close();
 
-        // Insert records if the table is empty
         if (count == 0) {
             ContentValues values = new ContentValues();
             values.put(COLUMN_NAME, "Pizza Hải Sản");
@@ -191,13 +189,14 @@ public class FoodDBHelper extends SQLiteOpenHelper{
         onCreate(db);
     }
 
-    public boolean insertBill(String total, Date date, int idUser){
+    public boolean insertBill(String total, Date date,int totalCount, int idUser){
         @SuppressLint("SimpleDateFormat") SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
         String dateString = sdf.format(date);
         SQLiteDatabase db = this.getWritableDatabase();
         ContentValues contentValues = new ContentValues();
         contentValues.put(COLUMN_TOTAL, total);
         contentValues.put(COLUMN_DATE, dateString);
+        contentValues.put(COLUMN_TOTAL_COUNT, totalCount);
         contentValues.put(COLUMN_ID_USER, idUser);
         long result = db.insert(TABLE_BILL, null, contentValues);
         if (result == -1) {
