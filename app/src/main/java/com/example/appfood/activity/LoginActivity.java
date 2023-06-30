@@ -37,10 +37,13 @@ public class LoginActivity extends AppCompatActivity {
                     int checkEmail = db.checkEmailPassword(user, password);
                     if(checkPhone != 0 || checkEmail != 0){
                         Toast.makeText(LoginActivity.this, "Đăng nhập thành công!", Toast.LENGTH_SHORT).show();
-                        String id1 = String.valueOf(checkPhone);
-                        String id2 = String.valueOf(checkEmail);
-                        sessionUser.setUserId(id1);
-                        sessionUser.setUserId(id2);
+                        if(checkPhone != 0){
+                            String id = String.valueOf(checkPhone);
+                            sessionUser.setUserId(id);
+                        }else {
+                            String id = String.valueOf(checkEmail);
+                            sessionUser.setUserId(id);
+                        }
                         Intent intent  = new Intent(getApplicationContext(), MainActivity.class);
                         startActivity(intent);
                     }else{

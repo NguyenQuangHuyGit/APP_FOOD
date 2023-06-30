@@ -61,28 +61,15 @@ public class AccountActivity extends AppCompatActivity {
                 if(name.equals("")||address.equals("")||email.equals("")||phone.equals("")){
                     Toast.makeText(AccountActivity.this, "Dữ liệu không được để trống", Toast.LENGTH_SHORT).show();
                 }else {
-                    Boolean checkPhone = db.checkPhone(phone);
-                    Boolean checkEmail = db.checkEmail(email);
-                    if(checkEmail == false){
-                        if (checkPhone == false){
-                            Boolean update = db.updateUser(userId,name,address,email,phone);
-                            if(update==true){
-                                Toast.makeText(AccountActivity.this, "Cập nhật thông tin tài khoản thành công !", Toast.LENGTH_SHORT).show();
-                            }else{
-                                Toast.makeText(AccountActivity.this, "Cập nhật thông tin tài khoản không thành công !", Toast.LENGTH_SHORT).show();
-                            }
-                        }
-                    }else {
-                        Toast.makeText(AccountActivity.this, "Email đã được đăng ký. Vui lòng kiểm tra lại !", Toast.LENGTH_SHORT).show();
+                    Boolean update = db.updateUser(userId,name,address,email,phone);
+                    if(update==true){
+                        Toast.makeText(AccountActivity.this, "Cập nhật thông tin tài khoản thành công !", Toast.LENGTH_SHORT).show();
+                    }else{
+                        Toast.makeText(AccountActivity.this, "Cập nhật thông tin tài khoản không thành công !", Toast.LENGTH_SHORT).show();
                     }
                 }
             }
         });
-
-
-
-
-
 
     }
     private void setVariable(){
