@@ -30,6 +30,9 @@
             android:name=".activity.HistoryActivity"
             android:exported="false" />
         <activity
+            android:name=".activity.NotifyActivity"
+            android:exported="false" />
+        <activity
             android:name=".activity.VerificationActivity"
             android:exported="false" />
 

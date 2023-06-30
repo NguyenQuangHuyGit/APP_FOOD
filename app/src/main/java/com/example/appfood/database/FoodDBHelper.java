@@ -263,6 +263,19 @@ public class FoodDBHelper extends SQLiteOpenHelper{
         }
     }
 
+    public boolean updateUser2(int id, String name, String address) {
+        SQLiteDatabase db = this.getWritableDatabase();
+        ContentValues contentValues = new ContentValues();
+        contentValues.put(COLUMN_USER_NAME, name);
+        contentValues.put(COLUMN_USER_ADDRESS, address);
+        long result = db.update(TABLE_USER, contentValues, COLUMN_USER_ID + " = ?", new String[]{String.valueOf(id)});
+        if (result == -1) {
+            return false;
+        } else {
+            return true;
+        }
+    }
+
     public Boolean checkPhone(String phone){
         SQLiteDatabase MyDatabase = this.getWritableDatabase();
         Cursor cursor = MyDatabase.rawQuery("Select * from users where phone = ?", new String[]{phone});
