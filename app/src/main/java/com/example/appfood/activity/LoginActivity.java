@@ -23,8 +23,10 @@ public class LoginActivity extends AppCompatActivity {
         binding = ActivityLoginBinding.inflate(getLayoutInflater());
         setContentView(binding.getRoot());
         db = new FoodDBHelper(this);
-        String phone = getIntent().getExtras().getString("phone");
-        binding.loginPhoneEmail.setText(phone);
+        if(getIntent().getExtras() != null){
+            String phone = getIntent().getExtras().getString("phone");
+            binding.loginPhoneEmail.setText(phone);
+        }
         sessionUser = new SessionUser(this);
         binding.loginButton.setOnClickListener(new View.OnClickListener() {
             @Override
