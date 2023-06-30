@@ -3,12 +3,18 @@ package com.example.appfood.activity;
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
+import androidx.core.app.NotificationCompat;
 import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import android.annotation.SuppressLint;
 import android.app.AlertDialog;
+import android.app.Notification;
+import android.app.NotificationChannel;
+import android.app.NotificationManager;
+import android.app.PendingIntent;
+import android.app.TaskStackBuilder;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
@@ -58,7 +64,6 @@ public class CartActivity extends AppCompatActivity implements TextViewChangeLis
     TextView txtCount;
     TextView txtTotal;
     TextView txtTotalBill;
-
     SlideToActView btnCheckOut;
     SessionUser sessionUser;
     @Override
@@ -129,6 +134,7 @@ public class CartActivity extends AppCompatActivity implements TextViewChangeLis
                         Intent intent = new Intent(CartActivity.this,MainActivity.class);
                         startActivity(intent);
                         Toast.makeText(CartActivity.this,"Đặt hàng thành công",Toast.LENGTH_SHORT).show();
+                        sendNotification(CartActivity.this,"Đơn hàng đang được chuẩn bị. Nhớ lưu ý điện thoại nhé!");
                     }
                 });
                 builder.setNegativeButton("Thôi no rồi!", new DialogInterface.OnClickListener() {
@@ -196,6 +202,33 @@ public class CartActivity extends AppCompatActivity implements TextViewChangeLis
                 vibrator.vibrate(1000);
             }
         }
+    }
+
+    public static void sendNotification(Context context, String content) {
+        Intent intent = new Intent(context, MainActivity.class);
+        intent.setAction("NOTIFICATION_CLICK_ACTION");
+        TaskStackBuilder stackBuilder = TaskStackBuilder.create(context);
+        stackBuilder.addNextIntentWithParentStack(intent);
+        PendingIntent resultPendingIntent =
+                stackBuilder.getPendingIntent(0,
+                        PendingIntent.FLAG_UPDATE_CURRENT | PendingIntent.FLAG_IMMUTABLE);
+        // Create a notification builder with your custom content
+        NotificationCompat.Builder builder = new NotificationCompat.Builder(context, "appfood_chanel")
+                .setSmallIcon(R.drawable.app_logo)
+                .setContentTitle("Đặt hàng thành công rồi!")
+                .setContentText(content)
+                .setPriority(NotificationCompat.PRIORITY_HIGH)
+                .setContentIntent(resultPendingIntent)
+                .setAutoCancel(true);
+        NotificationManager notificationManager = (NotificationManager) context.getSystemService(Context.NOTIFICATION_SERVICE);
+
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+            NotificationChannel channel = new NotificationChannel("appfood_chanel", "My App Channel", NotificationManager.IMPORTANCE_DEFAULT);
+            notificationManager.createNotificationChannel(channel);
+        }
+
+        Notification notification = builder.build();
+        notificationManager.notify(1, notification);
     }
 
 }
