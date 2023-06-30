@@ -16,7 +16,7 @@
             android:visible="false"/>
         <item
             android:id="@+id/btnHistory"
-            android:icon="@drawable/account_ic"
+            android:icon="@drawable/list_ic"
             android:title="Lịch sử đặt hàng"
             android:visible="false"/>
         <item
