@@ -76,6 +76,7 @@ public class MainActivity extends AppCompatActivity {
             menu.findItem(R.id.btnRegister).setVisible(false);
             menu.findItem(R.id.btnLogout).setVisible(true);
             menu.findItem(R.id.btnAccount).setVisible(true);
+            menu.findItem(R.id.btnHistory).setVisible(true);
         }
     }
 
@@ -199,6 +200,8 @@ public class MainActivity extends AppCompatActivity {
                     return true;
                 }
                 if(itemId == R.id.btnHistory){
+                    Intent intent = new Intent(MainActivity.this, HistoryActivity.class);
+                    startActivity(intent);
                     return true;
                 }
                 return false;

@@ -4,9 +4,11 @@ public class Bill {
     private int id;
     private String date;
     private int count;
-    private Double totalBill;
+    private String totalBill;
 
-    public Bill(int id, String date, int count, Double totalBill) {
+    public Bill(){}
+
+    public Bill(int id, String date, int count, String totalBill) {
         this.id = id;
         this.date = date;
         this.count = count;
@@ -37,11 +39,11 @@ public class Bill {
         this.count = count;
     }
 
-    public Double getTotalBill() {
+    public String getTotalBill() {
         return totalBill;
     }
 
-    public void setTotalBill(Double totalBill) {
+    public void setTotalBill(String totalBill) {
         this.totalBill = totalBill;
     }
 }

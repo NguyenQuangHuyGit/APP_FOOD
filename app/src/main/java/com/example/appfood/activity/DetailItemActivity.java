@@ -39,6 +39,7 @@ public class DetailItemActivity extends AppCompatActivity {
     DecimalFormat decimalFormat = new DecimalFormat("###,###,###");
     SessionCart sessionCart;
     SessionUser sessionUser;
+    Cart cart;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
