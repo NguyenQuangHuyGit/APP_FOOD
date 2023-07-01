@@ -208,6 +208,8 @@ public class FoodDBHelper extends SQLiteOpenHelper{
         }
     }
 
+
+
     @SuppressLint("Range")
     public ArrayList<Bill> getBillbyUserId(int userId){
         ArrayList<Bill> arrayList = new ArrayList<>();
@@ -218,7 +220,7 @@ public class FoodDBHelper extends SQLiteOpenHelper{
         Cursor res =  db.query(TABLE_BILL,column,selection,selectionArgs,null,null,null);
         while(res.moveToNext()){
             Bill bill = new Bill();
-            bill.setId(res.getInt(res.getColumnIndex(COLUMN_ID)));
+            bill.setId_user(userId);
             bill.setDate(res.getString(res.getColumnIndex(COLUMN_DATE)));
             bill.setCount(res.getInt(res.getColumnIndex(COLUMN_TOTAL_COUNT)));
             bill.setTotalBill(res.getString(res.getColumnIndex(COLUMN_TOTAL)));
@@ -242,10 +244,22 @@ public class FoodDBHelper extends SQLiteOpenHelper{
         }
     }
 
-    public int getLastInsertId(){
+    public int getLastInsertIdBill(){
         int lastInsertedId = -1;
         SQLiteDatabase db = this.getWritableDatabase();
         String query = "SELECT last_insert_rowid() FROM " + TABLE_BILL;
+        Cursor cursor = db.rawQuery(query, null);
+        if (cursor.moveToFirst()) {
+            lastInsertedId = cursor.getInt(0);
+        }
+        cursor.close();
+        return lastInsertedId;
+    }
+
+    public int getLastInsertIdDetailBill(){
+        int lastInsertedId = -1;
+        SQLiteDatabase db = this.getWritableDatabase();
+        String query = "SELECT last_insert_rowid() FROM " + TABLE_BILL_FOOD;
         Cursor cursor = db.rawQuery(query, null);
         if (cursor.moveToFirst()) {
             lastInsertedId = cursor.getInt(0);
