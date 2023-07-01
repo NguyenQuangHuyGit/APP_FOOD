@@ -1,7 +1,7 @@
 package com.example.appfood.model;
 
 public class Bill {
-    private int id;
+    private int id_user;
     private String date;
     private int count;
     private String totalBill;
@@ -9,18 +9,18 @@ public class Bill {
     public Bill(){}
 
     public Bill(int id, String date, int count, String totalBill) {
-        this.id = id;
+        this.id_user = id;
         this.date = date;
         this.count = count;
         this.totalBill = totalBill;
     }
 
-    public int getId() {
-        return id;
+    public int getId_user() {
+        return id_user;
     }
 
-    public void setId(int id) {
-        this.id = id;
+    public void setId_user(int id_user) {
+        this.id_user = id_user;
     }
 
     public String getDate() {

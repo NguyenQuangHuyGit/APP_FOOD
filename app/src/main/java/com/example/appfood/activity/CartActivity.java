@@ -1,6 +1,7 @@
 package com.example.appfood.activity;
 
 import androidx.annotation.NonNull;
+import androidx.annotation.RequiresApi;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
 import androidx.core.app.NotificationCompat;
@@ -39,14 +40,24 @@ import com.example.appfood.adapter.cardItemAdapter;
 import com.example.appfood.adapter.foodItemAdapter;
 import com.example.appfood.database.FoodDBHelper;
 import com.example.appfood.interfaces.TextViewChangeListener;
+import com.example.appfood.model.Bill;
 import com.example.appfood.model.Cart;
+import com.example.appfood.model.DetailBill;
 import com.example.appfood.model.Food;
+import com.google.android.gms.tasks.OnFailureListener;
+import com.google.android.gms.tasks.OnSuccessListener;
+import com.google.firebase.firestore.DocumentReference;
+import com.google.firebase.firestore.FirebaseFirestore;
 import com.ncorti.slidetoact.SlideToActView;
 
+import java.security.Key;
 import java.text.DecimalFormat;
+import java.text.SimpleDateFormat;
 import java.time.LocalDate;
+import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.Date;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Locale;
 import java.util.Map;
@@ -109,7 +120,7 @@ public class CartActivity extends AppCompatActivity implements TextViewChangeLis
         });
 
         btnCheckOut.setOnSlideCompleteListener(new SlideToActView.OnSlideCompleteListener() {
-            Date date = new Date();
+//            Date date = new Date();
             @Override
             public void onSlideComplete(@NonNull SlideToActView slideToActView) {
                 if(sessionUser.getUserId() == null){
@@ -123,12 +134,13 @@ public class CartActivity extends AppCompatActivity implements TextViewChangeLis
                 builder.setPositiveButton("Xác nhận", new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialog, int which) {
-                        foodDB.insertBill(txtTotal.getText().toString(), date,Integer.parseInt(txtCount.getText().toString()), Integer.parseInt(sessionUser.getUserId()));
-                        int idBill = foodDB.getLastInsertId();
-                        for(int i=0;i<arrayFood.size();i++){
-                            int idFood = arrayFood.get(i).getId();
-                            foodDB.insertDetailBill(idBill,idFood,itemCarts.get(idFood));
-                        }
+                        writeData();
+//                        foodDB.insertBill(txtTotal.getText().toString(), date,Integer.parseInt(txtCount.getText().toString()), Integer.parseInt(sessionUser.getUserId()));
+//                        int idBill = foodDB.getLastInsertId();
+//                        for(int i=0;i<arrayFood.size();i++){
+//                            int idFood = arrayFood.get(i).getId();
+//                            foodDB.insertDetailBill(idBill,idFood,itemCarts.get(idFood));
+//                        }
                         sessionCart.clear();
                         vibrate(CartActivity.this);
                         Intent intent = new Intent(CartActivity.this,MainActivity.class);
@@ -229,6 +241,53 @@ public class CartActivity extends AppCompatActivity implements TextViewChangeLis
 
         Notification notification = builder.build();
         notificationManager.notify(1, notification);
+    }
+
+
+    @RequiresApi(api = Build.VERSION_CODES.O)
+    private void writeData(){
+        FirebaseFirestore db = FirebaseFirestore.getInstance();
+        Date date = new Date();
+        foodDB.insertBill(txtTotalBill.getText().toString(), date,Integer.parseInt(txtCount.getText().toString()), Integer.parseInt(sessionUser.getUserId()));
+        int idBill = foodDB.getLastInsertIdBill();
+        Map<String, Object> bill = new HashMap<>();
+        bill.put("totalBill", txtTotalBill.getText().toString());
+        bill.put("date", date);
+        bill.put("count", txtCount.getText().toString());
+        bill.put("user_id",Integer.parseInt(sessionUser.getUserId()));
+        db.collection("Bill").document(String.valueOf(idBill)).set(bill);
+
+        for(int i=0;i<arrayFood.size();i++){
+            int idFood = arrayFood.get(i).getId();
+            foodDB.insertDetailBill(idBill,idFood,itemCarts.get(idFood));
+            int id = foodDB.getLastInsertIdDetailBill();
+            Map<String, Object> detailBill = new HashMap<>();
+            detailBill.put("id_food", idFood);
+            detailBill.put("id_bill", idBill);
+            detailBill.put("count", itemCarts.get(idFood));
+            db.collection("DetailBill").document(String.valueOf(id)).set(detailBill);
+        }
+//        foodDB.insertBill(txtTotalBill.getText().toString(), date,Integer.parseInt(txtCount.getText().toString()), Integer.parseInt(sessionUser.getUserId()));
+//        int idBill = foodDB.getLastInsertIdBill();
+//        Bill bill = new Bill();
+//        bill.setId_user(Integer.parseInt(sessionUser.getUserId()));
+//        bill.setTotalBill(txtTotalBill.getText().toString());
+//        bill.setDate(date.toString());
+//        bill.setCount(Integer.parseInt(txtCount.getText().toString()));
+//        mDatabase = FirebaseDatabase.getInstance("https://appfood-391114-default-rtdb.asia-southeast1.firebasedatabase.app/");
+//        DatabaseReference billRef =  mDatabase.getReference("Bill");
+//        billRef.child("id_bill").child(String.valueOf(idBill)).setValue(bill);
+//        DatabaseReference detailbillRef =  mDatabase.getReference("DetailBill");
+//        for(int i=0;i<arrayFood.size();i++){
+//            int idFood = arrayFood.get(i).getId();
+//            foodDB.insertDetailBill(idBill,idFood,itemCarts.get(idFood));
+//            int id = foodDB.getLastInsertIdDetailBill();
+//            DetailBill detailBill = new DetailBill();
+//            detailBill.setId(idBill);
+//            detailBill.setCount(itemCarts.get(idFood));
+//            detailBill.setId_food(idFood);
+//            detailbillRef.child(String.valueOf(id)).setValue(detailBill);
+//        }
     }
 
 }
